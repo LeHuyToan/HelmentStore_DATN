@@ -1,0 +1,13 @@
+mailServer:
+  host: smtp.gmail.com
+  port: 587
+  email: mubaohiemvnk@gmail.com
+  password: ftrm ywog ooqk emqb
+  protocol: smtp
+  isSSL: false
+
+frontend:
+  base-endpoint: https://vnk25.store
+
+backend:
+  base-endpoint: https://vnk-backend-application.azuremicroservices.io
