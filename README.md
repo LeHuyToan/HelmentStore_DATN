@@ -35,20 +35,28 @@
  * Demo
    - Trang chủ
      ![trangchu](https://github.com/NgocKhanh107/vnk-store-website/assets/109933771/4d75939b-ae1b-4d61-b4c1-34e46c38ae2a)
+     
    - Sản phẩm chi tiết
      ![spct](https://github.com/NgocKhanh107/teeeee/assets/109933771/6d7d944f-4052-4d54-9499-bb66ffad3e66)
+     
    - Giỏ hàng
      ![giohang](https://github.com/NgocKhanh107/teeeee/assets/109933771/4a5e5f8f-1c6f-4390-bba9-3b1d707dd10e)
+     
    - Thanh toán
      ![thanhhtoan](https://github.com/NgocKhanh107/teeeee/assets/109933771/d247b1a1-0290-41b0-9816-37a244b6eccc)
+     
    - VNPay
      ![vnpay](https://github.com/NgocKhanh107/teeeee/assets/109933771/ac332211-f7cd-4068-8267-1d9fa9d54801)
+     
    - Admin
      ![bhtaiquay](https://github.com/NgocKhanh107/teeeee/assets/109933771/fd8b627e-32be-436b-9470-6c6e6eca90fe)
+     
    - Thống kê
      ![thongke](https://github.com/NgocKhanh107/teeeee/assets/109933771/ac22f38b-456b-4937-b4df-cef07a2aa8d3)
+     
    - Hoá đơn
      ![hoadon](https://github.com/NgocKhanh107/teeeee/assets/109933771/2fec91bf-eeeb-4c6b-8b6c-967979976e8d)
+     
    - Sản phẩm
      ![qlsanpham](https://github.com/NgocKhanh107/teeeee/assets/109933771/1936893a-05dc-4172-b32f-d6228c37f705)
  
