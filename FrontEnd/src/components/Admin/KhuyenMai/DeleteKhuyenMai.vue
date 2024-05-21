@@ -6,14 +6,14 @@
             <span>Bạn có chắc chắn muốn xoá những khuyến mại được chọn</span>
         </div>
         <template #footer>
-            <Button label="No" icon="pi pi-times" class="p-button-text" @click="hideDialogDelete" />
-            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteKhuyenMai" />
+            <Button label="Hủy" icon="pi pi-times" class="p-button-text" @click="hideDialogDelete" />
+            <Button label="Đồng ý" icon="pi pi-check" class="p-button-text" @click="deleteKhuyenMai" />
         </template>
     </Dialog>
 </template>
 
 <script setup>
-import { ref,  defineProps } from 'vue';
+import { ref, defineProps } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { khuyenMaiStore } from '@/service/Admin/KhuyenMai/KhuyenMaiService.js';
 
@@ -36,11 +36,16 @@ const deleteKhuyenMai = () => {
     props.selectedKhuyenMai.forEach((khuyenmai) => {
         const khuyenmaiId = khuyenmai.id;
         const updatedKhuyenMai = { ...khuyenmai, status: 'newStatus' };
-        khuyenMaiService.deleteKhuyenMai(updatedKhuyenMai, khuyenmaiId);      
-        deleteSelectedKhuyenMaiDialog.value = false;
+        khuyenMaiService.deleteKhuyenMai(updatedKhuyenMai, khuyenmaiId);
     });
+
+    // Xóa các khuyến mãi đã chọn khỏi danh sách selectedKhuyenMai
+    props.selectedKhuyenMai = props.selectedKhuyenMai.filter((selected) => !props.selectedKhuyenMai.includes(selected));
+
+    // Đóng dialog sau khi xóa
+    deleteSelectedKhuyenMaiDialog.value = false;
+
+    // Hiển thị thông báo thành công
     toast.add({ severity: 'warn', summary: '', detail: 'Xoá thành công', life: 3000 });
 };
-
-
 </script>

@@ -23,10 +23,7 @@ const schema = yup.object().shape({
         .matches(/^[0-9]{10}$/, 'Số điện thoại phải chứa đúng 10 số')
         .typeError('Số điện thoại phải là một số')
         .nullable(),
-    userName: yup
-        .string()
-        .required('User name không được để trống')
-        .matches(/^[a-zA-Z0-9đĐáÁàÀảẢãÃạẠăĂắẮằẰẳẲẵẴặẶâÂấẤầẦẩẨẫẪậẬêÊếẾềỀểỂễỄệỆôÔốỐồỒổỔỗỖộỘơƠớỚờỜởỞỡỠợỢùÙúÚụỤủỦũŨưỨỨửỬữỮựỰýÝỳỲỷỶỹỸỵỴ\s]*$/, 'User name không được chứa kí tự đặc biệt!'),
+    userName: yup.string().required('User name không được để trống'),
     password: yup.string().required('Password không được để trống'),
     gioiTinh: yup.string().required('Vui lòng chọn giới tính '),
     ngaySinh: yup.date().required(' vui lòng chọn ngày sinh '),
@@ -82,7 +79,6 @@ const hideDialog = () => {
     submitted.value = false;
 };
 
-
 const addProduct = async () => {
     submitted.value = true;
     const form = {
@@ -110,22 +106,20 @@ const addProduct = async () => {
             ten: form.ten,
             userName: form.userName,
             password: form.password,
-            email: form.email,
+            email: form.email
         };
 
-        await userService.sendMail(mailData); 
+        await userService.sendMail(mailData);
 
         productDialog.value = false;
         toast.add({ severity: 'success', summary: 'Thông báo', detail: 'Thêm thành công', life: 3000 });
         reset();
-
     } catch (error) {
         // Dữ liệu không hợp lệ, hiển thị thông báo lỗi bằng Toast
         toast.add({ severity: 'error', summary: 'Lỗi', detail: error.message, life: 3000 });
     }
     addProductDialog.value = false;
 };
-
 
 //save
 const saveProduct = () => {
@@ -196,14 +190,14 @@ function onFileInputImage(event) {
                         <div class="p-fluid formgrid grid">
                             <div class="field col-12" style="margin-bottom: 30px">
                                 <span class="p-float-label">
-                                    <InputText id="userName" v-model.trim="userName" :class="{ 'p-invalid': userNameError }" required="true" autofocus />
+                                    <InputText id="userName" v-model="userName" :class="{ 'p-invalid': userNameError }" required="true" autofocus />
                                     <label for="userName">Tài khoản</label>
                                 </span>
                                 <small class="p-error">{{ userNameError }}</small>
                             </div>
                             <div class="Field col-12" style="margin-bottom: 30px">
                                 <span class="p-float-label">
-                                    <InputText id="ten" name="ten" type="text" v-model.trim="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
+                                    <InputText id="ten" name="ten" type="text" v-model="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
                                     <label for="ten">Tên Người dùng</label>
                                 </span>
                                 <small class="p-error">{{ tenError }}</small>
@@ -217,7 +211,7 @@ function onFileInputImage(event) {
                             </div>
                             <div class="field col-12" style="margin-bottom: 30px">
                                 <label for="ngaySinh">Ngày sinh</label>
-                                <InputText type="date" v-model.trim="ngaySinh"   />
+                                <InputText type="date" v-model.trim="ngaySinh" />
                                 <small class="p-error">{{ ngaySinhError }}</small>
                             </div>
                             <div class="field col-12" style="margin-bottom: 30px">
@@ -236,7 +230,7 @@ function onFileInputImage(event) {
                             </div>
                             <div class="field col-12" style="margin-bottom: 30px">
                                 <span class="p-float-label">
-                                    <InputText id="diaChi" v-model.trim="diaChi" required="true" autofocus />
+                                    <InputText id="diaChi" v-model="diaChi" required="true" autofocus />
                                     <label for="diaChi">Địa chỉ</label>
                                 </span>
                             </div>
@@ -246,10 +240,10 @@ function onFileInputImage(event) {
                 <!-- cột trái -->
                 <div class="p-col-6" style="margin-left: 70px">
                     <div class="formgrid grid">
-                        <div style="width: 200px; height: 170px; margin-left: 10px">
+                        <!-- <div style="width: 200px; height: 170px; margin-left: 10px">
                             <qrcode-stream @decode="onDecode" @error="onError" :torch="torch"></qrcode-stream>
                             <p>{{ error }}</p>
-                        </div>
+                        </div> -->
                         <!-- <button @click="toggleTorch">{{ torch ? 'Tắt' : 'Bật' }}</button> -->
                     </div>
                     <div style="display: block; margin-top: 100px">
@@ -307,4 +301,3 @@ function onFileInputImage(event) {
         </div>
     </div> -->
 </template>
-

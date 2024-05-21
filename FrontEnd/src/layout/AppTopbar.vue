@@ -67,9 +67,9 @@ const getAllTB = async () => {
     data.value = thongBaoStore.data;
 };
 
-const loadSPBanHangTaiQuay = async()=>{
-    await  store.loadSP();
-}
+const loadSPBanHangTaiQuay = async () => {
+    await store.loadSP();
+};
 
 const loadHD = async () => {
     await useHD.fetchData();
@@ -181,14 +181,14 @@ const toggle = (event) => {
 const dangXuat = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUserInformation');
-  router.push({ name: 'logout-admin' });
+    router.push({ name: 'logout-admin' });
 };
 
 const dangNhap = () => {
-  router.push({ name: 'login-admin' });
+    router.push({ name: 'login-admin' });
 };
 const thongTinCaNhan = () => {
-  router.push({ name: 'ho-so-admin' });
+    router.push({ name: 'ho-so-admin' });
 };
 </script>
 
@@ -202,67 +202,57 @@ const thongTinCaNhan = () => {
             <img src="/src/assets/images/logo.png" alt="logo" style="height: 70px" />
         </router-link>
 
-        <button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle()">
-            <i class="pi pi-bars"></i>
+        <button class="layout-menu-button layout-topbar-button" style="border: none; background-color: white" @click="onMenuToggle()">
+            <i class="pi pi-bars layout-topbar-icon"></i>
         </button>
 
-        <button class="p-link layout-topbar-menu-button layout-topbar-button" @click="onTopBarMenuButton()">
+        <button class="layout-topbar-icon layout-topbar-menu-button layout-topbar-button" @click="onTopBarMenuButton()">
             <i class="pi pi-ellipsis-v"></i>
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
             <div class="flex justify-content-center" style="margin-right: 10px; margin-left: 0px; margin-right: 20px">
-                <button class="p-link" @click="toggle" aria-haspopup="true" aria-controls="overlay_tmenu">
-                    <i class="pi pi-user" style="font-size: 1.5rem" />
+                <button style="border: none; background-color: white" @click="toggle" aria-haspopup="true" aria-controls="overlay_tmenu">
+                    <i class="pi pi-user layout-topbar-icon" />
                 </button>
                 <OverlayPanel ref="op2" style="display: block; width: 150px">
-                    <button v-if="tokenCheck != null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu"
-                        @click="thongTinCaNhan">
-                        <div class="flex align-items-center" style="height: 20px; margin-bottom: 10px; width: 120px">Hồ sơ
-                            cá nhân</div>
+                    <button v-if="tokenCheck != null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu" @click="thongTinCaNhan">
+                        <div class="flex align-items-center" style="height: 25px; width: 120px; padding: 15px 5px; line-height: 25px">Hồ sơ cá nhân</div>
                     </button>
-                    <button v-if="tokenCheck == null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu"
-                        @click="dangNhap">
-                        <div class="flex align-items-center" style="height: 20px; margin-bottom: 10px; width: 120px">Đăng
-                            Nhập</div>
+                    <button v-if="tokenCheck == null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu" @click="dangNhap">
+                        <div class="flex align-items-center" style="height: 25px; width: 120px; padding: 15px 5px; line-height: 25px">Đăng Nhập</div>
                     </button>
 
-                    <button v-if="tokenCheck != null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu"
-                        @click="dangXuat">
-                        <div class="flex align-items-center" style="height: 20px; margin-bottom: 10px; width: 120px">Đăng
-                            Xuất</div>
+                    <button v-if="tokenCheck != null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu" @click="dangXuat">
+                        <div class="flex align-items-center" style="height: 25px; width: 120px; padding: 15px 5px; line-height: 25px">Đăng Xuất</div>
                     </button>
                 </OverlayPanel>
             </div>
 
             <div class="flex justify-content-center gap-4" style="">
-                <button class="p-link" @click="toggle2" aria-haspopup="true" aria-controls="overlay_tmenu">
-                    <i v-badge="dem" class="pi pi-bell p-overlay-badge" style="font-size: 1.5rem" />
+                <button style="border: none; background-color: white" @click="toggle2" aria-haspopup="true" aria-controls="overlay_tmenu">
+                    <i v-badge="dem" class="pi pi-bell p-overlay-badge layout-topbar-icon" style="font-size: 1.5rem" />
                 </button>
 
                 <OverlayPanel ref="op" style="height: 300px; overflow: auto">
                     <H6>Thông báo </H6>
-                    <div v-if="!data || data.length===0" style="text-align: center; margin-top: 50px; "  > 
-                                  
-                                  <svg  width="50px" height="50px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="bi bi-file-earmark-x">
-<path d="M6.854 7.146a.5.5 0 1 0-.708.708L7.293 9l-1.147 1.146a.5.5 0 0 0 .708.708L8 9.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 9l1.147-1.146a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146z"/>
-<path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
-</svg>
-                       
-                            
-<h5  style="text-align: center;">Chưa có Thông báo !</h5>
-                          </div>
+                    <div v-if="!data || data.length === 0" style="text-align: center; margin-top: 50px">
+                        <svg width="50px" height="50px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="bi bi-file-earmark-x">
+                            <path d="M6.854 7.146a.5.5 0 1 0-.708.708L7.293 9l-1.147 1.146a.5.5 0 0 0 .708.708L8 9.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 9l1.147-1.146a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146z" />
+                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                        </svg>
+
+                        <h5 style="text-align: center">Chưa có Thông báo !</h5>
+                    </div>
                     <div v-for="(o, index) in data">
                         <button class="p-link" aria-haspopup="true" aria-controls="overlay_tmenu">
-                            <div class="flex align-items-center" style="height: 50px; margin-bottom: 10px; width: 240px"
-                                @click="daXem(o.id)">
+                            <div class="flex align-items-center" style="height: 50px; margin-bottom: 10px; width: 240px" @click="daXem(o.id)">
                                 <div style="display: flex">
                                     <div style="margin-right: 10px; width: 180px; margin-bottom: -30px">
                                         <p style="margin-bottom: 30px">{{ o.content }}</p>
                                     </div>
                                     <div style="">
-                                        <span style="font-size: 10px; margin-top: 0px">{{ o.trangThai == 0 ? 'đã xem' :
-                                            'chưa xem' }}</span>
+                                        <span style="font-size: 10px; margin-top: 0px">{{ o.trangThai == 0 ? 'đã xem' : 'chưa xem' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -274,7 +264,9 @@ const thongTinCaNhan = () => {
     </div>
 </template>
 
-<style lang="scss" scoped>button.p-link:hover {
+<style lang="scss" scoped>
+.p-link:hover {
     background-color: rgb(248, 239, 239);
     /* Thay #f00 bằng màu bạn muốn */
-}</style>
+}
+</style>

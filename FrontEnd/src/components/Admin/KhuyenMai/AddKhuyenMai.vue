@@ -4,7 +4,6 @@
         <template #header>
             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                 <h5 class="m-0">Khuyến Mại</h5>
-            
             </div>
         </template>
 
@@ -92,12 +91,13 @@ const hideDialog = () => {
 };
 
 const schema = Yup.object().shape({
-    // ma: Yup.string().required('Mã khuyến mại không được để trống').min(4, 'Tên khuyến mại phải có ít nhất 4 ký tự'),
-    ten: Yup.string().required('Tên khuyến mại không được để trống').min(4, 'Tên khuyến mại phải có ít nhất 4 ký tự').max(100, 'Tên giới hạn 100 ký tự')
-    .test('no-spaces', 'Tên không được chứa khoảng trắng', value => value && !/\s/.test(value)),
-    moTa: Yup.string().required('Vui lòng điền mô tả khuyến mại').min(10, 'Mô tả khuyến mại phải có ít nhất 10 ký tự')
-    .test('no-spaces', 'Tên không được chứa khoảng trắng', value => value && !/\s/.test(value)),
-    thoiGianBatDau: Yup.date().nullable().required('Thời gian bắt đầu là bắt buộc').typeError('Vui lòng chọn ngày hợp lệ').min(new Date(new Date().setHours(0, 0, 0, 0)), 'Thời gian bắt đầu không thể nhỏ hơn thời gian hiện tại'),
+    ten: Yup.string().required('Tên khuyến mại không được để trống').min(4, 'Tên khuyến mại phải có ít nhất 4 ký tự').max(100, 'Tên giới hạn 100 ký tự'),
+    moTa: Yup.string().required('Vui lòng điền mô tả khuyến mại').min(10, 'Mô tả khuyến mại phải có ít nhất 10 ký tự'),
+    thoiGianBatDau: Yup.date()
+        .nullable()
+        .required('Thời gian bắt đầu là bắt buộc')
+        .typeError('Vui lòng chọn ngày hợp lệ')
+        .min(new Date(new Date().setHours(0, 0, 0, 0)), 'Thời gian bắt đầu không thể nhỏ hơn thời gian hiện tại'),
     thoiGianKetThuc: Yup.date().nullable().min(Yup.ref('thoiGianBatDau'), 'Ngày kết thúc phải sau ngày bắt đầu').required('Thời gian kết thúc là bắt buộc').typeError('Vui lòng chọn ngày hợp lệ'),
     giaTriGiam: Yup.number().required('Bạn cần nhập giá trị giảm').typeError('Giá trị giảm phải là một số').min(1, 'Giá trị giảm phải lớn hơn hoặc bằng 1').nullable()
 });

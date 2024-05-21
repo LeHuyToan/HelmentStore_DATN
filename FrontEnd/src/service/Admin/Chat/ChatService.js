@@ -1,8 +1,8 @@
-import {defineStore} from "pinia";
-import {ref} from "vue";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 import axios from '@/service/Authentication/http.js';
-import * as chatService from "@/service/chatkitty";
-import {ChatKitty} from 'chatkitty-platform-sdk'
+import * as chatService from '@/service/chatkitty';
+import { ChatKitty } from 'chatkitty-platform-sdk';
 
 const API_ENDPOINT = `${import.meta.env.VITE_BASE_API_ENDPOINT}/admin/chat`;
 const chatkitty = new ChatKitty({
@@ -23,7 +23,7 @@ export const useChatStore = defineStore('chat', () => {
     const loadUserFromBackend = async () => {
         const response = await axios.get(`${API_ENDPOINT}/user`);
         dsUser.value = response.data;
-    }
+    };
 
     const createChatkittyUser = async (name, displayName) => {
         const user = await chatkitty.Users.createUser({
@@ -31,22 +31,19 @@ export const useChatStore = defineStore('chat', () => {
             displayName,
             isGuest: false
         });
-      //  console.log(user);
-    }
+        //  console.log(user);
+    };
 
     const createDirectChannel = async (username) => {
         const channel = await chatkitty.Channels.createChannel({
             type: 'DIRECT',
-            members: [
-                { username },
-                { username: 'cskh@gmail.com' }
-            ]
+            members: [{ username }, { username: 'cskh@gmail.com' }]
         });
-    //    console.log(channel);
-    }
+        //    console.log(channel);
+    };
 
-    const setup = async (username,id) => {
-       await chatService.login(username,id);
+    const setup = async (username, id) => {
+        await chatService.login(username, id);
         loadingRooms.value = true;
         rooms.value = await chatService.fetchRooms();
         loadingRooms.value = false;
@@ -54,7 +51,7 @@ export const useChatStore = defineStore('chat', () => {
     };
 
     const fetchMessages = async ({ room, options = {} }) => {
-      //  console.log("fetching messages");
+        //  console.log("fetching messages");
         if (options.reset) {
             chatService.exitRoom(room);
             messages.value = [];
@@ -108,5 +105,5 @@ export const useChatStore = defineStore('chat', () => {
         fetchMessages,
         sendMessage,
         tearDown
-    }
+    };
 });

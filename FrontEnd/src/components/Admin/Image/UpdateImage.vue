@@ -35,17 +35,16 @@ const { handleSubmit, resetForm } = useForm({
 
 const { value: anh, errorMessage: anhError } = useField('anh');
 
-
 //add
-const emit = defineEmits(['updateImg:myProp'])
+const emit = defineEmits(['updateImg:myProp']);
 const onSubmit = handleSubmit(async (values) => {
     submitted.value = true;
     const form = {
         idSP: props.idProduct,
         anh: values.anh
-    }
+    };
     const data = await productStore.editImg(form, props.myProp.id);
-    emit('updateImg:myProp', data)
+    emit('updateImg:myProp', data);
     toast.add({ severity: 'success', summary: 'Success Message', detail: 'update thành công', life: 3000 });
     productDialog.value = false;
 });
@@ -53,8 +52,7 @@ const onSubmit = handleSubmit(async (values) => {
 const reset = () => {
     resetForm();
     anh.value = props.myProp.anh;
-}
-
+};
 
 // mở form
 const openNew = () => {
@@ -72,7 +70,7 @@ function onFileInputImage(event) {
         const objectURL = URL.createObjectURL(file);
         anhs.value = objectURL;
         // Gán giá trị cho phần tử có id là 'imagesChinh' (thay đổi id nếu cần)
-        const basePath = "D:\\imgDATN\\"; // Đường dẫn cố định
+        const basePath = 'D:\\imgDATN\\'; // Đường dẫn cố định
         const fileName = basePath + file.name;
         anh.value = fileName;
     }
@@ -95,11 +93,9 @@ const loadDataSize = async () => {
     dataSize.value = useSizeService.dataByStatus1;
 };
 
-
 onMounted(() => {
     loadDataSize();
 });
-
 </script>
 <template>
     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="openNew" />
@@ -108,31 +104,21 @@ onMounted(() => {
         <div class="card">
             <form @submit="onSubmit">
                 <div class="p-fluid formgrid grid">
-
-                    <div class="t"
-                        style="border: 1px solid black; border-radius: 10px; width: 300px; height: 240px; margin-top: 10px; margin-left: 10px; margin-bottom: 20px;">
-                        <img :src="anhs == null ? anh : anhs" alt=""
-                            style="width: 275px; height: 230px; top: 50%; left: 50%; transform: translate(4%, 2%)" />
+                    <div class="t" style="border: 1px solid black; border-radius: 10px; width: 300px; height: 240px; margin-top: 10px; margin-left: 10px; margin-bottom: 20px">
+                        <img :src="anhs == null ? anh : anhs" alt="" style="width: 275px; height: 230px; top: 50%; left: 50%; transform: translate(4%, 2%)" />
                     </div>
-                    <div class="buton" style="margin-top: 10px; margin-bottom: 20px;">
-                        <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000"
-                            @input="onFileInputImage" style="display: flex; width: 200px; margin-left: 50px;" />
+                    <div class="buton" style="margin-top: 10px; margin-bottom: 20px">
+                        <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @input="onFileInputImage" style="display: flex; width: 200px; margin-left: 50px" />
                     </div>
                     <small class="p-error">{{ anhError }}</small>
 
-
-                    <div style="width: 1000px; text-align: center;display: flex; margin-left: 40px;">
-
-                        <Button class="p-button-outlined" outlined severity="secondary"
-                            style="width: 100px; height: auto; margin: 10px" @click="reset()" label="clear"></Button>
-                        <Button type="submit" class="p-button-outlined" style="width: 100px; height: auto; margin: 10px"
-                            label="Lưu"></Button>
+                    <div style="width: 1000px; text-align: center; display: flex; margin-left: 40px">
+                        <Button class="p-button-outlined" outlined severity="secondary" style="width: 100px; height: auto; margin: 10px" @click="reset()" label="clear"></Button>
+                        <Button type="submit" class="p-button-outlined" style="width: 100px; height: auto; margin: 10px" label="Lưu"></Button>
                     </div>
                 </div>
-
             </form>
         </div>
-
     </Dialog>
     <!-- </div>
         </div>

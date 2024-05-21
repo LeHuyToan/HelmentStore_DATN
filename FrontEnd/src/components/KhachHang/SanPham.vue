@@ -4,11 +4,15 @@ import { computed, onMounted, ref } from 'vue';
 import { SanPhamStore } from '@/service/KhachHang/SanPhamService';
 import { useRouter } from 'vue-router';
 const SanPhamService = SanPhamStore();
+
 const home = ref({
     icon: 'pi pi-home',
     to: { name: 'trang-chu' }
 });
 
+const goToHomePage = () => {
+    router.push({ name: 'trang-chu' });
+};
 const router = useRouter();
 
 const goToProductDetail = (productId) => {
@@ -34,7 +38,11 @@ onMounted(() => {
 
 const layout = ref('grid');
 
-const items = ref([{ label: 'Tất cả sản phẩm', to: { name: 'san-pham' }}]);
+const items = ref([{ label: 'Tất cả sản phẩm', to: { name: 'san-pham' } }]);
+
+const goToSanPhamPage = () => {
+    router.push({ name: 'san-pham' });
+};
 
 const formatCurrency = (value) => {
     return parseInt(value).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -118,7 +126,7 @@ const filteredAndSortedProducts = computed(() => {
 <template>
     <div class="card">
         <div class="container">
-            <Breadcrumb :home="home" :model="items" />
+            <Breadcrumb :home="home" :model="items" @click="goToHomePage" />
             <h1>Sản phẩm</h1>
 
             <Divider />
@@ -152,97 +160,73 @@ const filteredAndSortedProducts = computed(() => {
                 </template>
 
                 <template #list="slotProps">
+                    <div class="grid grid-nogutter">
+                        <div v-for="(sp, index) in slotProps.items" :key="index" class="col-12">
+                            <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4 hover-animation" :class="{ 'border-top-1 surface-border': index !== 0 }">
+                                <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" :src="sp.anh" :alt="sp.tenSP" />
+                                <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+                                    <div class="flex flex-column align-items-center sm:align-items-start gap-3">
+                                        <div class="text-2xl font-bold text-900">{{ sp.tenSP }}</div>
 
+                                        <div class="flex align-items-center gap-3">
+                                            <span class="flex align-items-center gap-2">
+                                                <i class="pi pi-tag"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+                                        <p class="text-xl font-semibold" style="color: black; text-align: center" v-if="sp.giaBanMin == sp.giaBanMax">{{ formatCurrency(sp.giaBanMax) }}</p>
+                                        <p class="text-xl font-semibold" style="color: black; text-align: center" v-else-if="sp.giaSauGiamMax != null && sp.giaSauGiamMin != null && sp.giaSauGiamMax != sp.giaSauGiamMin">
+                                            {{ formatCurrency(sp.giaSauGiamMin) }} - {{ formatCurrency(sp.giaSauGiamMax) }}
+                                        </p>
+                                        <p class="text-xl font-semibold" style="color: black; text-align: center" v-else-if="sp.giaSauGiamMax == null && sp.giaSauGiamMin == null">
+                                            {{ formatCurrency(sp.giaBanMin) }} - {{ formatCurrency(sp.giaBanMax) }}
+                                        </p>
+                                        <p class="text-xl font-semibold" style="color: black; text-align: center" v-else-if="sp.giaSauGiamMax == sp.giaSauGiamMin">{{ formatCurrency(sp.giaSauGiamMax) }}</p>
+                                        <p class="text-xl font-semibold" style="color: black; text-align: center" v-else>{{ formatCurrency(sp.giaBanMin) }} - {{ formatCurrency(sp.giaBanMax) }}</p>
+                                        <Button icon="pi  pi-shopping-cart" rounded @click="goToProductDetail(sp.idSP)"></Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
 
-
-<div class="grid grid-nogutter">
-<div v-for="(sp, index) in slotProps.items" :key="index" class="col-12">
-    <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4" :class="{ 'border-top-1 surface-border': index !== 0 }">
-        <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" :src="sp.anh" :alt="sp.tenSP" />
-        <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-            <div class="flex flex-column align-items-center sm:align-items-start gap-3">
-                <div class="text-2xl font-bold text-900">{{sp.tenSP }}</div>
-               
-                <div class="flex align-items-center gap-3">
-                    <span class="flex align-items-center gap-2">
-                        <i class="pi pi-tag"></i>
-                       
-                    </span>
-                  
-                </div>
-            </div>
-            <div class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                <p class="text-xl font-semibold" style="color: black; text-align: center" v-if="sp.giaBanMin == sp.giaBanMax">{{ formatCurrency(sp.giaBanMax) }}</p>
-                <p
-                    class="text-xl font-semibold"
-                    style="color: black; text-align: center"
-                    v-else-if="sp.giaSauGiamMax != null && sp.giaSauGiamMin != null && sp.giaSauGiamMax != sp.giaSauGiamMin"
-                >
-                    {{ formatCurrency(sp.giaSauGiamMin) }} - {{ formatCurrency(sp.giaSauGiamMax) }}
-                </p>
-                <p class="text-xl font-semibold" style="color: black; text-align: center" v-else-if="sp.giaSauGiamMax == null && sp.giaSauGiamMin == null">
-                    {{ formatCurrency(sp.giaBanMin) }} - {{ formatCurrency(sp.giaBanMax) }}
-                </p>
-                <p class="text-xl font-semibold" style="color: black; text-align: center" v-else-if="sp.giaSauGiamMax == sp.giaSauGiamMin">{{ formatCurrency(sp.giaSauGiamMax) }}</p>
-                <p class="text-xl font-semibold" style="color: black; text-align: center" v-else>{{ formatCurrency(sp.giaBanMin) }} - {{ formatCurrency(sp.giaBanMax) }}</p>
-                <Button icon="pi  pi-shopping-cart" rounded @click="goToProductDetail(sp.idSP)"></Button>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-
-
-</template>
-
-<template #grid="slotProps">
-
-<div class="grid grid-nogutter">
-<div v-for="(sp, index) in slotProps.items" :key="index" class="col-12 sm:col-6 lg:col-12 xl:col-3 p-2">
-    <div class="p-4 border-1 surface-border surface-card border-round">
-        <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-            <div class="flex align-items-center gap-2">
-                <i class="pi pi-tag"></i>
-            </div>
-        </div>
-        <div class="flex flex-column align-items-center gap-3 py-5">
-            <img class="w-9 shadow-2 border-round" :src="sp.anh" :alt="sp.tenSP" />
-            <div class="text-2xl font-bold">{{ sp.tenSP}}</div>
-            
-        </div>
-        <div class="flex sm:flex-column align-items-center gap-3 sm:gap-2">
-            <p class="text-xl font-semibold" style="color: black; text-align: center" v-if="sp.giaBanMin == sp.giaBanMax">{{ formatCurrency(sp.giaBanMax) }}</p>
-            <p
-                class="text-xl font-semibold"
-                style="color: black; text-align: center"
-                v-else-if="sp.giaSauGiamMax != null && sp.giaSauGiamMin != null && sp.giaSauGiamMax != sp.giaSauGiamMin"
-            >
-                {{ formatCurrency(sp.giaSauGiamMin) }} - {{ formatCurrency(sp.giaSauGiamMax) }}
-            </p>
-            <p class="text-xl font-semibold" style="color: black; text-align: center" v-else-if="sp.giaSauGiamMax == null && sp.giaSauGiamMin == null">
-                {{ formatCurrency(sp.giaBanMin) }} - {{ formatCurrency(sp.giaBanMax) }}
-            </p>
-            <p class="text-xl font-semibold" style="color: black; text-align: center" v-else-if="sp.giaSauGiamMax == sp.giaSauGiamMin">{{ formatCurrency(sp.giaSauGiamMax) }}</p>
-            <p class="text-xl font-semibold" style="color: black; text-align: center" v-else>{{ formatCurrency(sp.giaBanMin) }} - {{ formatCurrency(sp.giaBanMax) }}</p>
-            <Button icon="pi pi-shopping-cart" rounded  @click="goToProductDetail(sp.idSP)"></Button>
-        </div>
-        <div class="flex align-items-center justify-content-between">
-           
-          
-        </div>
-    </div>
-</div>
-</div>
-
-
-
-</template>
-
+                <template #grid="slotProps">
+                    <div class="grid grid-nogutter">
+                        <div v-for="(sp, index) in slotProps.items" :key="index" class="col-12 sm:col-6 lg:col-12 xl:col-3 p-2">
+                            <div class="p-4 border-1 surface-border surface-card border-round hover-animation">
+                                <div class="flex flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="flex align-items-center gap-2">
+                                        <i class="pi pi-tag"></i>
+                                    </div>
+                                </div>
+                                <div class="flex flex-column align-items-center gap-3 py-5">
+                                    <img class="w-9 shadow-2 border-round" :src="sp.anh" :alt="sp.tenSP" />
+                                    <div class="text-2xl font-bold">{{ sp.tenSP }}</div>
+                                </div>
+                                <div class="flex sm:flex-column align-items-center gap-3 sm:gap-2">
+                                    <p class="text-xl font-semibold" style="color: black; text-align: center" v-if="sp.giaBanMin == sp.giaBanMax">{{ formatCurrency(sp.giaBanMax) }}</p>
+                                    <p class="text-xl font-semibold" style="color: black; text-align: center" v-else-if="sp.giaSauGiamMax != null && sp.giaSauGiamMin != null && sp.giaSauGiamMax != sp.giaSauGiamMin">
+                                        {{ formatCurrency(sp.giaSauGiamMin) }} - {{ formatCurrency(sp.giaSauGiamMax) }}
+                                    </p>
+                                    <p class="text-xl font-semibold" style="color: black; text-align: center" v-else-if="sp.giaSauGiamMax == null && sp.giaSauGiamMin == null">{{ formatCurrency(sp.giaBanMin) }} - {{ formatCurrency(sp.giaBanMax) }}</p>
+                                    <p class="text-xl font-semibold" style="color: black; text-align: center" v-else-if="sp.giaSauGiamMax == sp.giaSauGiamMin">{{ formatCurrency(sp.giaSauGiamMax) }}</p>
+                                    <p class="text-xl font-semibold" style="color: black; text-align: center" v-else>{{ formatCurrency(sp.giaBanMin) }} - {{ formatCurrency(sp.giaBanMax) }}</p>
+                                    <Button icon="pi pi-shopping-cart" rounded @click="goToProductDetail(sp.idSP)"></Button>
+                                </div>
+                                <div class="flex align-items-center justify-content-between"></div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </DataView>
             <Divider />
+
+            <h2>Sản phẩm nổi bật</h2>
             <Carousel :value="dataSP" :numVisible="4" :numScroll="4" :responsiveOptions="responsiveOptions">
                 <template #item="slotProps">
-                    <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
+                    <div class="border-1 surface-border border-round m-2 text-center py-5 px-3 hover-animation">
                         <div class="" style="height: 60px">
                             <img :src="slotProps.data.anh" alt="Hình ảnh" style="width: 50%" />
                         </div>
@@ -296,6 +280,15 @@ const filteredAndSortedProducts = computed(() => {
 
 .container {
     width: 1100px;
+}
+
+.hover-animation {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Define the transform scale for hover effect */
+.hover-animation:hover {
+    transform: scale(1.05); /* You can adjust the scale value for the desired hover effect */
 }
 
 /* Định dạng cho mỗi phần tử trong danh sách */

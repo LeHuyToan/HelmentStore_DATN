@@ -23,8 +23,8 @@ const hideDialog = () => {
 };
 
 const schema = Yup.object().shape({
-    ten: Yup.string().required('Tên sản phẩm không được để trống').min(4, 'Tên sản phẩm phải có ít nhất 4 ký tự') .test('no-spaces', 'Tên không được chứa khoảng trắng', value => value && !/\s/.test(value)),
-    moTa: Yup.string().required('Vui lòng điền mô tả voucher').min(10, 'Mô tả voucher phải có ít nhất 10 ký tự') .test('no-spaces', 'Tên không được chứa khoảng trắng', value => value && !/\s/.test(value)),
+    ten: Yup.string().required('Tên sản phẩm không được để trống').min(4, 'Tên sản phẩm phải có ít nhất 4 ký tự'),
+    moTa: Yup.string().required('Vui lòng điền mô tả voucher').min(10, 'Mô tả voucher phải có ít nhất 10 ký tự'),
     soLuong: Yup.number().required('Bạn cần nhập số lượng voucher').typeError('Số lượng voucher phải là một số').min(1, 'Số lượng phải lớn hơn hoặc bằng 1').nullable(),
     giaTriGiam: Yup.number().required('Bạn cần nhập giá trị giảm của voucher').typeError('Giá trị giảm phải là số nguyên').min(1, 'Giá trị giảm phải lớn hơn hoặc bằng 1').max(100, 'Giá trị phải nhỏ hơn hoặc 100').nullable(),
     thoiGianBatDau: Yup.date()
@@ -78,7 +78,7 @@ const save = handleSubmit(async () => {
     <Dialog v-model:visible="voucherDialog" :style="{ width: '450px' }" header="Thêm Voucher" :modal="false" class="p-fluid">
         <div class="field">
             <label for="ten">Tên</label>
-            <InputText id="ten" v-model.trim="ten" :class="{ 'p-invalid': tenError }" autofocus />
+            <InputText id="ten" v-model="ten" :class="{ 'p-invalid': tenError }" autofocus />
             <small class="p-error">{{ tenError }}</small>
         </div>
         <div class="field">
@@ -99,7 +99,7 @@ const save = handleSubmit(async () => {
         </div>
         <div class="field">
             <label for="moTa">Mô Tả</label>
-            <InputText id="moTa" v-model.trim="moTa" :class="{ 'p-invalid': moTaError }" />
+            <InputText id="moTa" v-model="moTa" :class="{ 'p-invalid': moTaError }" />
             <small class="p-error">{{ moTaError }}</small>
         </div>
 

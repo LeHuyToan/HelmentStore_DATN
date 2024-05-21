@@ -141,6 +141,20 @@ const generateExcel = () => {
         width: columnWidths[index]
     }));
 
+    // Thêm dữ liệu vào sheet
+    vouchers.value.forEach((voucher, index) => {
+        worksheet.addRow({
+            STT: index + 1,
+            Tên: voucher.ten,
+            'Thời gian bắt đầu': formatDate(voucher.thoiGianBatDau),
+            'Thời gian kết thúc': formatDate(voucher.thoiGianKetThuc),
+            'Giảm tối đa': formatCurrency(voucher.giamToiDa),
+            'Giá trị giảm(%)': voucher.giaTriGiam,
+            'Số lượng': voucher.soLuong,
+            'Mô tả': voucher.moTa
+        });
+    });
+
     const headerRow = worksheet.getRow(1);
     headerRow.eachCell((cell) => {
         cell.fill = {
@@ -179,57 +193,57 @@ const handImportExcel = async (event) => {
         excel.value = VoucherService.excels;
         console.log(excel.value);
         let hasError = false;
-      //  for (const o of excel.value) {
-            for (const data of excel.value.responseList) {
-                if (data.importMessageTen !== null && data.importMessageTen !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageTen, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageThoiGianBatDau !== null && data.importMessageThoiGianBatDau !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageThoiGianBatDau, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageThoiGianKetThuc !== null && data.importMessageThoiGianKetThuc !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageThoiGianKetThuc, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageMoTa !== null && data.importMessageMoTa !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageMoTa, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageGiamToiDa !== null && data.importMessageGiamToiDa !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageGiamToiDa, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageGiaTriGiam !== null && data.importMessageGiaTriGiam !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageGiaTriGiam, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageSoLuong !== null && data.importMessageSoLuong !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageSoLuong, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                }
-                if (hasError) {
+        //  for (const o of excel.value) {
+        for (const data of excel.value.responseList) {
+            if (data.importMessageTen !== null && data.importMessageTen !== 'SUCCESS') {
+                toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageTen, life: 30000 });
+                hasError = true;
+                showProgressSpinner.value = false;
+                dis.value = true;
+                break;
+            } else if (data.importMessageThoiGianBatDau !== null && data.importMessageThoiGianBatDau !== 'SUCCESS') {
+                toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageThoiGianBatDau, life: 30000 });
+                hasError = true;
+                showProgressSpinner.value = false;
+                dis.value = true;
+                break;
+            } else if (data.importMessageThoiGianKetThuc !== null && data.importMessageThoiGianKetThuc !== 'SUCCESS') {
+                toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageThoiGianKetThuc, life: 30000 });
+                hasError = true;
+                showProgressSpinner.value = false;
+                dis.value = true;
+                break;
+            } else if (data.importMessageMoTa !== null && data.importMessageMoTa !== 'SUCCESS') {
+                toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageMoTa, life: 30000 });
+                hasError = true;
+                showProgressSpinner.value = false;
+                dis.value = true;
+                break;
+            } else if (data.importMessageGiamToiDa !== null && data.importMessageGiamToiDa !== 'SUCCESS') {
+                toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageGiamToiDa, life: 30000 });
+                hasError = true;
+                showProgressSpinner.value = false;
+                dis.value = true;
+                break;
+            } else if (data.importMessageGiaTriGiam !== null && data.importMessageGiaTriGiam !== 'SUCCESS') {
+                toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageGiaTriGiam, life: 30000 });
+                hasError = true;
+                showProgressSpinner.value = false;
+                dis.value = true;
+                break;
+            } else if (data.importMessageSoLuong !== null && data.importMessageSoLuong !== 'SUCCESS') {
+                toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageSoLuong, life: 30000 });
+                hasError = true;
+                showProgressSpinner.value = false;
+                dis.value = true;
                 break;
             }
+            if (hasError) {
+                break;
             }
-          
-      //  }
+        }
+
+        //  }
         if (!hasError) {
             showProgressSpinner.value = false;
             dis.value = true;
@@ -253,12 +267,12 @@ const handImportExcel = async (event) => {
                     <template v-slot:start>
                         <div class="my-2">
                             <AddVoucher />
-                            <DeleteVoucher :selectedVoucher="selectedVoucher" />
+                            <!-- <DeleteVoucher :selectedVoucher="selectedVoucher" /> -->
                         </div>
                     </template>
 
                     <template v-slot:end>
-                        <Button label="Import excel" icon="pi pi-download" @click="openPosition('top')" style="min-width: 10rem" severity="secondary" rounded />
+                        <Button label="Export excel" icon="pi pi-download" @click="openPosition('top')" style="min-width: 10rem" severity="secondary" rounded />
                     </template>
                 </Toolbar>
 
@@ -293,7 +307,8 @@ const handImportExcel = async (event) => {
                         </div>
                     </template>
 
-                    <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+                    <!-- <Column selectionMode="multiple" headerStyle="width: 3rem"></Column> -->
+                    <Column headerStyle="width: 3rem"></Column>
                     <Column field="ten" header="Tên" :sortable="true" headerStyle="width:14%; min-width:8rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">Tên</span>
@@ -353,10 +368,10 @@ const handImportExcel = async (event) => {
                         </template>
                     </Column> -->
 
-                    <Column headerStyle="min-width:10rem;">
+                    <Column header="Hành động" headerStyle="min-width:10rem;">
                         <template #body="slotProps">
                             <UpdateVoucher :my-prop="slotProps.data" />
-                            <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteVoucher(slotProps.data)" />
+                            <Button icon="pi pi-trash" style="" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteVoucher(slotProps.data)" />
                             <!-- <ApplyVoucher :my-prop="slotProps.data" /> -->
                             <detailVoucher :my-prop="slotProps.data" />
                         </template>
@@ -367,8 +382,10 @@ const handImportExcel = async (event) => {
                     <div class="flex align-items-center justify-content-center">
                         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
 
-                        <span v-if="voucher">Bạn có chắc chắn muốn xoá voucher <b>{{ voucher.ten }}</b>?</span>
-
+                        <span v-if="voucher"
+                            >Bạn có chắc chắn muốn xoá voucher <b>{{ voucher.ten }}</b
+                            >?</span
+                        >
                     </div>
                     <template #footer>
                         <Button label="Huỷ" icon="pi pi-times" class="p-button-text" @click="deleteVoucherDialog = false" />
@@ -378,7 +395,15 @@ const handImportExcel = async (event) => {
             </div>
         </div>
     </div>
-    <Dialog v-model:visible="visible" header="Import excel" :style="{ width: '400px' }" :position="position" :modal="true" :draggable="false">
+
+    <Dialog v-model:visible="visible" header="Bạn có muốn xuất file excel không?" :style="{ width: '400px' }" :position="position" :modal="true" :draggable="false">
+        <template #footer>
+            <Button label="Export" icon="pi pi-upload" class="p-button" @click="generateExcel($event)" rounded style="height: 40px; margin-right: 150px" severity="secondary" />
+            <Button label="Đóng" icon="pi pi-check" class="p-button" @click="closePosition()" severity="secondary" rounded style="height: 40px" />
+        </template>
+    </Dialog>
+
+    <!-- <Dialog v-model:visible="visible" header="Import excel" :style="{ width: '400px' }" :position="position" :modal="true" :draggable="false">
         <div class="flex align-items-center justify-content-center">
             <div v-if="dis">
                 <div class="custom-file-upload">
@@ -394,7 +419,7 @@ const handImportExcel = async (event) => {
             <Button label="Export" icon="pi pi-upload" class="p-button" @click="generateExcel($event)" rounded style="height: 40px; margin-right: 150px" severity="secondary" />
             <Button label="Đóng" icon="pi pi-check" class="p-button" @click="closePosition()" severity="secondary" rounded style="height: 40px" />
         </template>
-    </Dialog>
+    </Dialog> -->
 </template>
 
 <style scoped lang="scss">

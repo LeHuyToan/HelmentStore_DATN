@@ -57,7 +57,7 @@ const isOutsideClicked = (event) => {
 <template>
     <div class="layout-topbar">
         <router-link :to="{ name: 'trang-chu' }" class="layout-topbar-logo" style="height: 60px; width: 120px">
-            <img src="/src/assets/images/logo.png" alt="logo" style="height: 70px" />
+            <img src="/src/assets/images/logo.png" alt="logo" />
         </router-link>
         <!-- <span class="p-input-icon-left">
             <i class="pi pi-search" />
@@ -66,7 +66,7 @@ const isOutsideClicked = (event) => {
 
         <div class="layout-topbar-menu">
             <label for="" style="margin-right: 50px">Nhân viên: <span>Lê Văn B</span></label>
-<!--            <span style="font-weight: bold">9:25:00</span>-->
+            <!--            <span style="font-weight: bold">9:25:00</span>-->
         </div>
     </div>
 </template>

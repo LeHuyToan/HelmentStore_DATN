@@ -620,7 +620,7 @@ public class AdminExcelAddSanPhamSerivecImpl implements AdExcelAddSanPhamService
                     String azureImageUrl = null;
                     try {
                         azureImageUrl = imageToAzureUtil.uploadImageToAzure(s);
-                    } catch (URISyntaxException | StorageException | IOException | InvalidKeyException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     return azureImageUrl;

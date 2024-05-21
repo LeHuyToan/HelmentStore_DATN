@@ -38,11 +38,7 @@ const loadData = async () => {
 };
 
 const schema = yup.object().shape({
-    ten: yup
-        .string()
-        .required('Tên người dùng không được để trống')
-        .min(4, 'Tên phải có ít nhất 4 ký tự')
-        .matches(/^[a-zA-Z0-9đĐáÁàÀảẢãÃạẠăĂắẮằẰẳẲẵẴặẶâÂấẤầẦẩẨẫẪậẬêÊếẾềỀểỂễỄệỆôÔốỐồỒổỔỗỖộỘơƠớỚờỜởỞỡỠợỢùÙúÚụỤủỦũŨưỨỨửỬữỮựỰýÝỳỲỷỶỹỸỵỴ\s]*$/, 'Tên không được chứa kí tự đặc biệt!'),
+    ten: yup.string().required('Tên người dùng không được để trống').min(4, 'Tên phải có ít nhất 4 ký tự'),
     sdt: yup
         .string()
         .required('Số điện thoại không được để trống')
@@ -95,7 +91,7 @@ const updateProduct = () => {
         ngaySinh: ngaySinh.value,
         gioiTinh: gioiTinh.value,
         // diaChi: diaChi.value,
-        image: image.value,
+        image: image.value
     };
     schema
         .validate(form)
@@ -105,7 +101,7 @@ const updateProduct = () => {
             productDialog.value = false;
             toast.add({ severity: 'success', summary: 'Thông báo', detail: 'Sửa thành công', life: 3000 });
             reset();
-       //     loadData();
+            //     loadData();
             // Cập nhật giá trị của các biến với dữ liệu mới
             ten.value = form.ten;
             email.value = form.email;
@@ -145,87 +141,84 @@ function onFileInputImage(event) {
         image.value = fileName;
     }
 }
-
 </script>
 
 <template>
-  
-        <div class="card" style="width: 1000px; margin-left: 100px">
-            <h1 style="color: #e8db72">Hồ sơ của tôi</h1>
-            <label for="">Quản lý thông tin hồ sơ để bảo mật tài khoản</label>
-            <Divider />
-            <div class="ctn">
-                <form @submit="onSubmit">
-                    <div class="flex">
-                        <div class="p-col-6">
-                            <div class="item" style="margin-bottom: 30px">
-                                <label>Tên đăng nhập: </label>
-                                <span>{{ dataUser.userName }}</span>
-                            </div>
-                            <div class="item">
-                                <div class="flex">
-                                    <label>Tên: </label>
-                                    <InputText id="ten" name="ten" type="text" v-model.trim="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
-                                    <small class="p-error">{{ tenError }}</small>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <label>Email: </label>
-                                <InputText id="email" v-model.trim="email" required="true" autofocus :class="{ 'p-invalid': emailError }" />
-                                <small class="p-error">{{ emailError }}</small>
-                            </div>
-                            <div class="item">
-                                <label>Số điện thoại: </label>
-                                <InputText id="sdt" v-model.trim="sdt" required="true" autofocus :class="{ 'p-invalid': sdtError }" />
-                                <small class="p-error">{{ sdtError }}</small>
-                            </div>
+    <div class="card" style="width: 1000px; margin-left: 100px">
+        <h1 style="color: #e8db72">Hồ sơ của tôi</h1>
+        <label for="">Quản lý thông tin hồ sơ để bảo mật tài khoản</label>
+        <Divider />
+        <div class="ctn">
+            <form @submit="onSubmit">
+                <div class="flex">
+                    <div class="p-col-6">
+                        <div class="item" style="margin-bottom: 30px">
+                            <label>Tên đăng nhập: </label>
+                            <span>{{ dataUser.userName }}</span>
+                        </div>
+                        <div class="item">
                             <div class="flex">
-                                <label>Giới tính: </label>
-                                <div class="flex flex-wrap gap-3" style="margin-left: 120px; margin-bottom: 20px">
-                                    <div class="flex align-items-center">
-                                        <RadioButton id="nam" value="1" v-model.trim="gioiTinh" />
-                                        <label for="nam" class="ml-2">Nam</label>
-                                    </div>
-                                    <div class="flex align-items-center">
-                                        <RadioButton id="nu" value="0" v-model.trim="gioiTinh" />
-                                        <label for="nu" class="ml-2">Nữ</label>
-                                    </div>
+                                <label>Tên: </label>
+                                <InputText id="ten" name="ten" type="text" v-model.trim="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
+                                <small class="p-error">{{ tenError }}</small>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label>Email: </label>
+                            <InputText id="email" v-model.trim="email" required="true" autofocus :class="{ 'p-invalid': emailError }" />
+                            <small class="p-error">{{ emailError }}</small>
+                        </div>
+                        <div class="item">
+                            <label>Số điện thoại: </label>
+                            <InputText id="sdt" v-model.trim="sdt" required="true" autofocus :class="{ 'p-invalid': sdtError }" />
+                            <small class="p-error">{{ sdtError }}</small>
+                        </div>
+                        <div class="flex">
+                            <label>Giới tính: </label>
+                            <div class="flex flex-wrap gap-3" style="margin-left: 120px; margin-bottom: 20px">
+                                <div class="flex align-items-center">
+                                    <RadioButton id="nam" value="1" v-model.trim="gioiTinh" />
+                                    <label for="nam" class="ml-2">Nam</label>
+                                </div>
+                                <div class="flex align-items-center">
+                                    <RadioButton id="nu" value="0" v-model.trim="gioiTinh" />
+                                    <label for="nu" class="ml-2">Nữ</label>
                                 </div>
                             </div>
-                            <div class="item">
-                                <label>Ngày sinh: </label>
-                                <InputText type="date" v-model.trim="ngaySinh" :class="{ 'p-invalid': ngaySinhError }" />
-                                <small class="p-error">{{ ngaySinhError }}</small>
-                            </div>
-                            <!-- <div class="item">
+                        </div>
+                        <div class="item">
+                            <label>Ngày sinh: </label>
+                            <InputText type="date" v-model.trim="ngaySinh" :class="{ 'p-invalid': ngaySinhError }" />
+                            <small class="p-error">{{ ngaySinhError }}</small>
+                        </div>
+                        <!-- <div class="item">
                                 <label>Địa chỉ: </label>
                                 <Dropdown v-model="selectedDiaChi" :options="diaChiSelected" />
                                 <Button icon="pi pi-pencil" aria-label="Submit" style="margin-left: 15px" />
                             </div> -->
-                        </div>
-                        <div class="p-col-6">
-                            <div class="col-12">
-                                <div class="Field col-12 md:col-6" style="margin-bottom: 30px; height: 300px; margin-top: 10px; display: inline-flex; justify-content: center; align-items: center">
-                                    <div style="display: block">
-                                        <div class="t" style="border: 1px solid black; border-radius: 10px; width: 250px; height: 230px; margin-top: -60px">
-                                            <img :src="image" alt="image" style="width: 230px; height: 220px; top: 50%; left: 50%; transform: translate(4%, 2%)" />
-                                        </div>
-                                        <div class="buton" style="margin-top: 10px">
-                                            <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @input="onFileInputImage" style="display: flex" />
-                                        </div>
-                                        <small class="p-error">{{ imageError }}</small>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="col-12">
+                            <div class="Field col-12 md:col-6" style="margin-bottom: 30px; height: 300px; margin-top: 10px; display: inline-flex; justify-content: center; align-items: center">
+                                <div style="display: block">
+                                    <div class="t" style="border: 1px solid black; border-radius: 10px; width: 250px; height: 230px; margin-top: -60px">
+                                        <img :src="image" alt="image" style="width: 230px; height: 220px; top: 50%; left: 50%; transform: translate(4%, 2%)" />
                                     </div>
+                                    <div class="buton" style="margin-top: 10px">
+                                        <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @input="onFileInputImage" style="display: flex" />
+                                    </div>
+                                    <small class="p-error">{{ imageError }}</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="item" style="margin-left: 500px">
-                        <Button label="Update" icon="pi pi-check" size="small" @click="updateProduct" />
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="item" style="margin-left: 500px">
+                    <Button label="Update" icon="pi pi-check" size="small" @click="updateProduct" />
+                </div>
+            </form>
         </div>
-   
+    </div>
 </template>
 
 <style scoped>
@@ -233,7 +226,6 @@ function onFileInputImage(event) {
     display: flex;
     flex-direction: column; /* Xếp theo cột */
     align-items: flex-start; /* Căn các phần tử theo trục dọc (cột) */
-
 }
 
 .card {
@@ -260,5 +252,4 @@ function onFileInputImage(event) {
 .p-col-6:last-child {
     padding-right: 0;
 }
-
 </style>

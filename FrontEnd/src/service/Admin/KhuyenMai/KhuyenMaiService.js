@@ -1,4 +1,3 @@
-
 import { defineStore } from 'pinia';
 import axios from '@/service/Authentication/http.js';
 
@@ -7,22 +6,20 @@ const apiKhuyenMai = `${import.meta.env.VITE_BASE_API_ENDPOINT}/admin/khuyenMai`
 export const khuyenMaiStore = defineStore('khuyenmai', {
     state: () => ({
         data: [],
-        excels:[]
+        excels: []
     }),
     actions: {
-
         async uploadFile(formData) {
-            const response = await axios.post(apiKhuyenMai+"/view-data", formData);
+            const response = await axios.post(apiKhuyenMai + '/view-data', formData);
             const newProductData = response.data;
-            this.excels = newProductData; 
+            this.excels = newProductData;
         },
 
         async getKhuyenMai() {
             try {
                 const response = await axios.get(apiKhuyenMai + '/getAll');
                 this.data = response.data;
-            } catch (error) {
-            }
+            } catch (error) {}
         },
         createKhuyenMai(form) {
             axios.post(apiKhuyenMai + '/add', form).then((response) => {
@@ -43,27 +40,37 @@ export const khuyenMaiStore = defineStore('khuyenmai', {
                 }
             });
         },
-        deleteKhuyenMai(form, id) {
-            axios.put(apiKhuyenMai + '/delete/' + id, form).then((response) => {
-                if (this.data[0].trangThai != response.data.data.trangThai) {
-                    let index = -1;
-                    for (let i = 0; i < this.data.length; i++) {
-                        if (id == this.data[i].id) {
-                            index = i;
-                        }
-                    }
-                    this.data.splice(index, 1);
-                }
-            });
+        // deleteKhuyenMai(form, id) {
+        //     axios.put(apiKhuyenMai + '/delete/' + id, form).then((response) => {
+        //         if (this.data[0].trangThai != response.data.data.trangThai) {
+        //             let index = -1;
+        //             for (let i = 0; i < this.data.length; i++) {
+        //                 if (id == this.data[i].id) {
+        //                     index = i;
+        //                 }
+        //             }
+        //             this.data.splice(index, 1);
+        //         }
+        //     });
+        // },
+
+        deleteKhuyenMai(id) {
+            axios
+                .delete(apiKhuyenMai + '/delete/' + id)
+                .then(() => {
+                    // Sau khi xóa thành công, cần cập nhật state bằng cách lấy lại dữ liệu từ API hoặc loại bỏ khuyến mãi khỏi state nếu bạn đã lưu dữ liệu cục bộ
+                    this.data = this.data.filter((khuyenmai) => khuyenmai.id !== id);
+                })
+                .catch((error) => {
+                    console.error('Error deleting khuyen mai:', error);
+                });
         },
-       
+
         async getProduct() {
             try {
                 const response = await axios.get(apiKhuyenMai + '/getAllCTSPByKhuyenMai');
                 this.data = response.data;
-            } catch (error) {
-           
-            }
+            } catch (error) {}
         },
 
         updateCTSP(idctsp, idkm) {
@@ -79,4 +86,3 @@ export const khuyenMaiStore = defineStore('khuyenmai', {
         }
     }
 });
-

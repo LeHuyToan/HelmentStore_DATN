@@ -66,15 +66,12 @@ const editProduct = () => {
                     >
                 </div>
                 <div class="col-12">
-                    <label
-                        >Địa chỉ:
-                        <div v-for="i in myProp.diaChi">
-                            <div class="col-6" style="width: 100%">
-                                <p>{{ i.diaChi }}</p>
-                            </div>
-                        </div></label
-                    >
+                    <label>Địa chỉ:&nbsp;</label>
+                    <div style="display: inline-block">
+                        <span v-for="(item, index) in myProp.diaChi" :key="index">{{ item.diaChi }}</span>
+                    </div>
                 </div>
+
                 <!-- <div class="col-12">
                     <label>Địa chỉ: <span>Thôn Đông Mai, xã Trung Nghĩa, huyện Yên Phong, tỉnh Bắc Ninh.</span></label>
                 </div> -->
@@ -85,8 +82,8 @@ const editProduct = () => {
                 </div>
             </div>
             <!-- cột trái -->
-            <div class="p-col-6">
-                <img :src="myProp.anh" alt="User Image" style="width: 100%" />
+            <div class="p-col-6" style="margin-left: 40px">
+                <img :src="myProp.anh" alt="User Image" style="max-width: 150px; max-height: 150px; width: auto; height: auto" />
             </div>
         </div>
     </Dialog>

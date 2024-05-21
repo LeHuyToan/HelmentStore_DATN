@@ -45,7 +45,7 @@ const isTenTooLong = (ten) => {
     return ten.length > 30;
 };
 const isMoTaTooLong = (moTa) => {
-    if(moTa == null) return false;
+    if (moTa == null) return false;
     return moTa.length > 100;
 };
 const addProduct = () => {
@@ -55,7 +55,7 @@ const addProduct = () => {
         moTa: moTa.value
     };
     // Kiểm tra trường "ten" có trống (null hoặc chuỗi rỗng) hoặc có chứa ký tự đặc biệt không
-    if (form.ten == null || form.ten.length <=0 ) {
+    if (form.ten == null || form.ten.length <= 0) {
         ten.value = '';
         toast.add({ severity: 'error', summary: 'Thông báo', detail: 'Thêm thất bại', life: 3000 });
     } else if (containsSpecialCharacters(form.ten)) {
@@ -110,14 +110,14 @@ const saveProduct = () => {
                 <div class="p-fluid formgrid grid">
                     <div class="Field col-12" style="margin-bottom: 30px">
                         <span class="p-float-label">
-                            <InputText id="ten" name="ten" type="text" v-model.trim="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
+                            <InputText id="ten" name="ten" type="text" v-model="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
                             <label for="username">Tên màu sắc</label>
                         </span>
                         <small class="p-error">{{ tenError }}</small>
                     </div>
                     <div class="field col-12" style="margin-bottom: 30px">
                         <label for="address">Mô tả</label>
-                        <Textarea id="moTa" rows="4" v-model.trim="moTa" :class="{ 'p-invalid': MoTaSacError }" required="false" autofocus></Textarea>
+                        <Textarea id="moTa" rows="4" v-model="moTa" :class="{ 'p-invalid': MoTaSacError }" required="false" autofocus></Textarea>
                         <small class="p-error">{{ MoTaSacError }}</small>
                     </div>
                 </div>

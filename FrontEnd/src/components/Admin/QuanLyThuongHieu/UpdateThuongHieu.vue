@@ -92,7 +92,7 @@ const updateProduct = () => {
                 <div class="p-fluid formgrid grid">
                     <div class="Field col-12" style="margin-bottom: 30px">
                         <span class="p-float-label">
-                            <InputText id="ten" name="ten" type="text" v-model.trim="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
+                            <InputText id="ten" name="ten" type="text" v-model="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
                             <label for="username">Tên size</label>
                         </span>
                         <small class="p-error">{{ tenError }}</small>

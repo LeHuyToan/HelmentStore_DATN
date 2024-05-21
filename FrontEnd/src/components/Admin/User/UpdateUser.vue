@@ -12,28 +12,21 @@ const submitted = ref(false);
 const productDialog = ref(false);
 
 const schema = yup.object().shape({
-    ten: yup
-        .string()
-        .required('Tên người dùng không được để trống')
-        .min(4, 'Tên người dùng phải có ít nhất 4 ký tự')
-        .matches(/^[a-zA-Z0-9đĐáÁàÀảẢãÃạẠăĂắẮằẰẳẲẵẴặẶâÂấẤầẦẩẨẫẪậẬêÊếẾềỀểỂễỄệỆôÔốỐồỒổỔỗỖộỘơƠớỚờỜởỞỡỠợỢùÙúÚụỤủỦũŨưỨỨửỬữỮựỰýÝỳỲỷỶỹỸỵỴ\s]*$/, 'Tên không được chứa kí tự đặc biệt!'),
+    ten: yup.string().required('Tên người dùng không được để trống').min(4, 'Tên người dùng phải có ít nhất 4 ký tự'),
     sdt: yup
         .string()
         .required('Số điện thoại không được để trống')
         .matches(/^[0-9]{10}$/, 'Số điện thoại phải chứa đúng 10 số')
         .typeError('Số điện thoại phải là một số')
         .nullable(),
-    userName: yup
-        .string()
-        .required('User name không được để trống')
-        .matches(/^[a-zA-Z0-9đĐáÁàÀảẢãÃạẠăĂắẮằẰẳẲẵẴặẶâÂấẤầẦẩẨẫẪậẬêÊếẾềỀểỂễỄệỆôÔốỐồỒổỔỗỖộỘơƠớỚờỜởỞỡỠợỢùÙúÚụỤủỦũŨưỨỨửỬữỮựỰýÝỳỲỷỶỹỸỵỴ\s]*$/, 'User name không được chứa kí tự đặc biệt!'),
+    userName: yup.string().required('User name không được để trống'),
     gioiTinh: yup.string().required('Vui lòng chọn giới tính '),
     ngaySinh: yup.date().required(' vui lòng chọn ngày sinh '),
     email: yup
         .string()
         .matches(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/, 'Email không hợp lệ')
         .required(' Email không được để trống'),
-    image: yup.string().required('vui lòng chọn ảnh'),
+    image: yup.string().required('vui lòng chọn ảnh')
 });
 const { handleSubmit, resetForm } = useForm({
     validationSchema: schema
@@ -80,7 +73,7 @@ const editProduct = () => {
     email.value = props.myProp.email;
     sdt.value = props.myProp.sdt;
     ngaySinh.value = props.myProp.ngaySinh;
-    gioiTinh.value = props.myProp.gioiTinh.toString();
+    gioiTinh.value = props.myProp.gioiTinh !== null ? props.myProp.gioiTinh.toString() : '';
     images.value = props.myProp.anh;
     // Lấy giá trị đầu tiên của diaChi nếu mảng diaChi không rỗng
     diaChi.value = props.myProp.diaChi.length > 0 ? props.myProp.diaChi[0].diaChi : '';
@@ -119,7 +112,7 @@ const updateProduct = () => {
         ngaySinh: ngaySinh.value,
         gioiTinh: gioiTinh.value,
         diaChi: diaChi.value,
-        image: image.value,
+        image: image.value
     };
     schema
         .validate(form)
@@ -157,7 +150,7 @@ function onFileInputImage(event) {
     // Lặp qua từng tệp trong mảng files
     for (const file of files) {
         const objectURL = URL.createObjectURL(file);
-        images.value = objectURL;
+        images.value = objectURL; // Cập nhật giá trị của images
         // Gán giá trị cho phần tử có id là 'imagesChinh' (thay đổi id nếu cần)
         const basePath = 'D:\\imgDATN\\'; // Đường dẫn cố định
         const fileName = basePath + file.name;
@@ -176,14 +169,14 @@ function onFileInputImage(event) {
                         <div class="p-fluid formgrid grid">
                             <div class="field col-12" style="margin-bottom: 30px">
                                 <span class="p-float-label">
-                                    <InputText id="userName" v-model.trim="userName" :class="{ 'p-invalid': userNameError }" required="true" autofocus disabled />
+                                    <InputText id="userName" v-model="userName" :class="{ 'p-invalid': userNameError }" required="true" autofocus disabled />
                                     <label for="userName">Tài khoản</label>
                                 </span>
                                 <small class="p-error">{{ userNameError }}</small>
                             </div>
                             <div class="Field col-12" style="margin-bottom: 30px">
                                 <span class="p-float-label">
-                                    <InputText id="ten" name="ten" type="text" v-model.trim="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
+                                    <InputText id="ten" name="ten" type="text" v-model="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
                                     <label for="ten">Tên Người dùng</label>
                                 </span>
                                 <small class="p-error">{{ tenError }}</small>
@@ -209,7 +202,7 @@ function onFileInputImage(event) {
                             </div>
                             <div class="field col-12" style="margin-bottom: 30px">
                                 <span class="p-float-label">
-                                    <InputText id="diaChi" v-model.trim="diaChi" required="true" autofocus />
+                                    <InputText id="diaChi" v-model="diaChi" required="true" autofocus />
                                     <label for="diaChi">Địa chỉ</label>
                                 </span>
                             </div>

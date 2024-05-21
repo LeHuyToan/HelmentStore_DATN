@@ -437,7 +437,6 @@ const commentId = ref(null);
 const phanHoi = (id) => {
     phanHoiDialog.value = true;
     commentId.value = id;
-
 };
 
 const xoaPhanHoi = async (phanhoi) => {
@@ -479,11 +478,11 @@ const phanHoiComment = async () => {
     resetPhanHoi();
 };
 
-const checkAnh = ref(true)
+const checkAnh = ref(true);
 const isAnh = () => {
     checkAnh.value = true;
     anh.value = false;
-}
+};
 
 const menu = ref();
 </script>
@@ -498,17 +497,14 @@ const menu = ref();
                     <div class="flex">
                         <div class="col-5">
                             <Galleria :value="loadImage" :responsiveOptions="responsiveOptions" :numVisible="5" containerStyle="max-width: 450px">
-                                <!-- <template #item="anh" v-if ="anh" >
-                                   
-                                    <img  :src="selectedMauSac.anh" :alt="slotProps.item" style="width: 100%" />
-                                   
-                                </template> -->
+                                <template #item="anh" v-if="anh">
+                                    <img :src="selectedMauSac.anh" :alt="slotProps.item" style="width: 100%" />
+                                </template>
 
-                                <template #item="slotProps">   
-                                    <img  v-if ="checkAnh" :src="slotProps.item.anh" :alt="slotProps.item" style="width: 100%" />
-                                    <img v-if ="anh" :src="selectedMauSac.anh" :alt="slotProps.item" style="width: 100%" />                           
-                                  
-                               </template>
+                                <template #item="slotProps">
+                                    <img v-if="checkAnh" :src="slotProps.item.anh" :alt="slotProps.item" style="width: 100%" />
+                                    <img v-if="anh" :src="selectedMauSac.anh" :alt="slotProps.item" style="width: 100%" />
+                                </template>
                                 <template #thumbnail="slotProps">
                                     <img :src="slotProps.item.anh" :alt="slotProps.item" @click="isAnh()" style="width: 100%" />
                                 </template>
@@ -618,7 +614,7 @@ const menu = ref();
                                     <Divider />
                                     <div class="item">
                                         <label>Trọng lượng: </label>
-                                        <span> {{ dataSanPham.trongLuong }} </span>
+                                        <span>{{ dataListSPCT.trongLuong }} ({{ dataListSPCT.donVi }})</span>
                                     </div>
                                     <Divider />
                                     <div class="item">
@@ -643,7 +639,7 @@ const menu = ref();
                                     <Divider />
                                     <div class="item">
                                         <label>Lót: </label>
-                                        <span> {{ dataSanPham.demLot }}</span>
+                                        <span>{{ dataSanPham.demLot }}</span>
                                     </div>
                                     <Divider />
                                     <div class="item">
@@ -716,9 +712,9 @@ const menu = ref();
                                         </h6>
                                         <span>{{ cm.noiDung }}</span>
 
-                                        <div class="flex flex-wrap  align-items-center gap-3" style="margin-left: 700px">
-                                                <a @click="phanHoi(cm.id)" style="color: blue; margin-right: 5px;">Phản hồi</a>
-                                                <a @click="xoa(cm)" style="color: red">Xoá</a>
+                                        <div class="flex flex-wrap align-items-center gap-3" style="margin-left: 700px">
+                                            <a @click="phanHoi(cm.id)" style="color: blue; margin-right: 5px">Phản hồi</a>
+                                            <a @click="xoa(cm)" style="color: red">Xoá</a>
                                         </div>
 
                                         <!-- Phản hồi -->
@@ -766,7 +762,7 @@ const menu = ref();
                         </TabView>
                     </div>
                     <Divider />
-                    <div class="">
+                    <!-- <div class="">
                         <h2>Sản phẩm tương tự</h2>
                         <Carousel :value="products" :numVisible="3" :numScroll="3" :responsiveOptions="responsiveOptions">
                             <template #item="slotProps">
@@ -787,7 +783,7 @@ const menu = ref();
                                 </div>
                             </template>
                         </Carousel>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

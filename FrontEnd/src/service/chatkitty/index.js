@@ -1,13 +1,9 @@
-import { ChatKitty } from "@chatkitty/core";
-import { parseTimestamp } from "@/service/common/DateTimeUtils";
+import { ChatKitty } from '@chatkitty/core';
+import { parseTimestamp } from '@/service/common/DateTimeUtils';
 
 export const chatkitty = ChatKitty.getInstance(import.meta.env.VITE_CHATKITTY_APIKEY);
 
-export const enterRoom = async ({
-    room,
-    onMessageReceived,
-    onRoomUpdated
-}) => {
+export const enterRoom = async ({ room, onMessageReceived, onRoomUpdated }) => {
     const result = await chatkitty.startChatSession({
         channel: room._channel,
         onMessageReceived: (message) => {
@@ -30,9 +26,7 @@ export const exitRoom = (room) => {
 
 export const fetchMessages = async (room) => {
     if (room._messages_paginator) {
-        const items = room._messages_paginator.items
-            .map((message) => mapMessage(message))
-            .reverse();
+        const items = room._messages_paginator.items.map((message) => mapMessage(message)).reverse();
         const hasMore = room._messages_paginator.hasNextPage;
         if (hasMore) {
             room._messages_paginator = await room._messages_paginator.nextPage();
@@ -58,24 +52,21 @@ export const fetchRooms = async () => {
     }
     const result = await chatkitty.listChannels({ filter: { joined: true } });
     if (result.succeeded) {
-        return await Promise.all(
-            result.paginator.items.map(async (channel) => await mapChannel(user, channel))
-        );
+        return await Promise.all(result.paginator.items.map(async (channel) => await mapChannel(user, channel)));
     }
     return [];
 };
 
 export const login = async (usernames, userIds) => {
-
     const form = {
         username: usernames,
         authParams: {
             userId: parseInt(userIds)
         }
     };
- 
+
     const session = await chatkitty.startSession(form);
-//   console.log(session);
+    //   console.log(session);
 };
 
 export const logout = async () => {
@@ -93,22 +84,21 @@ const mapChannel = async (user, channel) => ({
     roomName:
         channel.type === 'DIRECT'
             ? channel.members
-                .filter((member) => member.id !== user.id)
-                .map((member) => member.displayName)
-                .join(', ')
+                  .filter((member) => member.id !== user.id)
+                  .map((member) => member.displayName)
+                  .join(', ')
             : channel.name,
     users:
         channel.type === 'DIRECT'
             ? channel.members.map((member) => mapUser(member))
             : await (async () => {
-                const result = await chatkitty.listChannelMembers({ channel });
-                if (result.succeeded) {
-                    return result.paginator.items.map((member) => mapUser(member));
-                }
-                return [];
-            })(),
-    lastMessage:
-        channel.lastReceivedMessage && mapMessage(channel.lastReceivedMessage, 'DD MMMM, HH:mm'),
+                  const result = await chatkitty.listChannelMembers({ channel });
+                  if (result.succeeded) {
+                      return result.paginator.items.map((member) => mapUser(member));
+                  }
+                  return [];
+              })(),
+    lastMessage: channel.lastReceivedMessage && mapMessage(channel.lastReceivedMessage, 'DD MMMM, HH:mm'),
     _channel: channel,
     _messages_paginator: null,
     _chat_session: null
@@ -118,8 +108,7 @@ const mapMessage = (message, timeFormat) => ({
     _id: message.id,
     content: message.type === 'TEXT' || message.type === 'SYSTEM_TEXT' ? message.body : '',
     senderId: message.type === 'TEXT' || message.type === 'FILE' ? message.user.name : 'system',
-    username:
-        message.type === 'TEXT' || message.type === 'FILE' ? message.user.displayName : 'System',
+    username: message.type === 'TEXT' || message.type === 'FILE' ? message.user.displayName : 'System',
     timestamp: parseTimestamp(message.createdTime, timeFormat || 'HH:mm'),
     date: parseTimestamp(message.createdTime, 'DD MMMM YYYY'),
     _message: message

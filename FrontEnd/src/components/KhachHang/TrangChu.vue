@@ -11,6 +11,15 @@ const dataHangMoi = ref([]);
 const dataFullrace = ref([]);
 const dataTreEm = ref([]);
 const dataSPBanChay = ref([]);
+const currentBannerIndex = ref(0); // State lưu trữ chỉ số của banner hiện tại
+
+const nextImage = () => {
+    currentBannerIndex.value = (currentBannerIndex.value + 1) % banner1.length;
+};
+
+const previousImage = () => {
+    currentBannerIndex.value = (currentBannerIndex.value - 1 + banner1.length) % banner1.length;
+};
 
 const goToProductDetail = (productId) => {
     themSPDaXem(productId);
@@ -60,14 +69,35 @@ const hienGiaGiam = (value) => {
     }
 };
 
+// Thêm hàm chuyển banner
+const changeBanner = () => {
+    currentBannerIndex.value = (currentBannerIndex.value + 1) % banner1.length;
+};
+
 onMounted(() => {
     loadData();
     loadDataSPBanChay();
     loadDataHangMoi();
     loadDataTreEm();
+
+    setInterval(changeBanner, 3000);
 });
 
-const banner1 = '/src/assets/images/banner.jpg';
+const banner1 = [
+    {
+        imageUrl: '/src/assets/images/banner1.jpg',
+        name: 'banner-1'
+    },
+    {
+        imageUrl: '/src/assets/images/banner2.png',
+        name: 'banner-2'
+    },
+    {
+        imageUrl: '/src/assets/images/banner3.png',
+        name: 'banner-3'
+    }
+];
+
 const thumbnails = [
     {
         imageUrl: 'https://nontrum.vn/wp-content/uploads/2019/10/non-balder-vang-1-e1583121638578.jpg',
@@ -87,6 +117,7 @@ const thumbnails = [
         name: 'NÓN TRẺ EM',
         price: '320,000 ₫'
     }
+
     // Thêm các đối tượng khác nếu cần
 ];
 
@@ -250,9 +281,10 @@ const themSPDaXem = async (idSP) => {
     <div class="grid">
         <div class="image-container">
             <div class="nav-button left-button" @click="previousImage">&lt;</div>
-            <img src="/src/assets/images/banner.jpg" class="centered-image" />
+            <img :src="banner1[currentBannerIndex].imageUrl" class="centered-image" />
             <div class="nav-button right-button" @click="nextImage">&gt;</div>
         </div>
+
         <div class="main-sp">
             <div class="thumbnail-list">
                 <div class="thumbnail" v-for="(thumbnail, index) in thumbnails" :key="index">
@@ -399,13 +431,17 @@ const themSPDaXem = async (idSP) => {
 
 .image-container {
     position: relative;
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
     width: 100%;
-    height: 100%;
+    height: 480px; /* Đặt chiều cao mong muốn của banner */
+    overflow: hidden; /* Ngăn chặn hình ảnh vượt ra khỏi phạm vi của banner */
 }
 
 .centered-image {
     width: 100%;
-    object-fit: contain;
+    height: 100%;
 }
 
 .nav-button {

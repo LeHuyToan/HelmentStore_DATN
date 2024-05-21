@@ -35,28 +35,25 @@ const { handleSubmit, resetForm } = useForm({
 
 const { value: imagesProduct, errorMessage: imagesProductError } = useField('imagesProduct');
 
-
 //add
-const emit = defineEmits(['addImg:myProp'])
+const emit = defineEmits(['addImg:myProp']);
 const onSubmit = handleSubmit(async (values) => {
     submitted.value = true;
     const form = {
         idSP: props.myProp,
         anh: values.imagesProduct
-    }
+    };
     const data = await productStore.addImg(form, props.myProp);
-    emit('addImg:myProp', data)
+    emit('addImg:myProp', data);
     reset();
     toast.add({ severity: 'success', summary: 'Success Message', detail: 'Thêm thành công', life: 3000 });
     productDialog.value = false;
-
-
 });
 
 const reset = () => {
     resetForm();
     anh.value = 'https://cdn-icons-png.flaticon.com/512/2956/2956744.png';
-}
+};
 
 // mở form
 const openNew = () => {
@@ -82,7 +79,6 @@ const loadDataSize = async () => {
     dataSize.value = useSizeService.dataByStatus1;
 };
 
-
 onMounted(() => {
     loadDataSize();
 });
@@ -95,7 +91,7 @@ function onFileInputImage(event) {
     for (const file of files) {
         const objectURL = URL.createObjectURL(file);
         // Gán giá trị cho phần tử có id là 'imagesChinh' (thay đổi id nếu cần)
-        const basePath = "D:\\imgDATN\\"; // Đường dẫn cố định
+        const basePath = 'D:\\imgDATN\\'; // Đường dẫn cố định
         const fileName = basePath + file.name;
         imagesProduct.value = fileName;
         anh.value = objectURL;
@@ -104,38 +100,27 @@ function onFileInputImage(event) {
 }
 </script>
 <template>
-    <Button label="" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew"
-        style="width: 50px; height: 40px; margin-left: 20px" />
+    <Button label="" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" style="width: 50px; height: 40px; margin-left: 20px" />
 
     <Dialog v-model:visible="productDialog" :style="{ width: '400px' }" header="Thêm ảnh" :modal="true" class="p-fluid">
         <div class="card">
             <form @submit="onSubmit">
                 <div class="p-fluid formgrid grid">
-                  
-                        <div class="t"
-                        style="border: 1px solid black; border-radius: 10px; width: 300px; height: 240px; margin-top: 10px; margin-left: 10px; margin-bottom: 20px;">
-                            <img :src="anh" alt=""
-                            style="width: 275px; height: 230px; top: 50%; left: 50%; transform: translate(4%, 2%)"  />
-                        </div>
-                        <div class="buton" style="margin-top: 10px; margin-bottom: 20px;">
-                            <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000"
-                                @input="onFileInputImage" style="display: flex; width: 200px; margin-left: 50px;"/>
-                        </div>
-                        <small class="p-error">{{ imagesProductError }}</small>
-                  
+                    <div class="t" style="border: 1px solid black; border-radius: 10px; width: 300px; height: 240px; margin-top: 10px; margin-left: 10px; margin-bottom: 20px">
+                        <img :src="anh" alt="" style="width: 275px; height: 230px; top: 50%; left: 50%; transform: translate(4%, 2%)" />
+                    </div>
+                    <div class="buton" style="margin-top: 10px; margin-bottom: 20px">
+                        <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @input="onFileInputImage" style="display: flex; width: 200px; margin-left: 50px" />
+                    </div>
+                    <small class="p-error">{{ imagesProductError }}</small>
 
-                   <div style="width: 1000px; text-align: center;display: flex; margin-left: 40px;">
-
-                        <Button class="p-button-outlined" outlined severity="secondary"
-                            style="width: 100px; height: auto; margin: 10px" @click="reset()" label="clear"></Button>
-                        <Button type="submit" class="p-button-outlined" style="width: 100px; height: auto; margin: 10px"
-                            label="Lưu"></Button>
+                    <div style="width: 1000px; text-align: center; display: flex; margin-left: 40px">
+                        <Button class="p-button-outlined" outlined severity="secondary" style="width: 100px; height: auto; margin: 10px" @click="reset()" label="clear"></Button>
+                        <Button type="submit" class="p-button-outlined" style="width: 100px; height: auto; margin: 10px" label="Lưu"></Button>
                     </div>
                 </div>
-
             </form>
         </div>
-
     </Dialog>
     <!-- </div>
         </div>

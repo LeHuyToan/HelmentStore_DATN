@@ -39,7 +39,6 @@ const initFilters = () => {
 const loadDataKhuyenmai = async () => {
     await khuyenmaiService.getKhuyenMai();
     khuyenmais.value = khuyenmaiService.data;
-  
 };
 
 // const initFilters1 = () => {
@@ -59,10 +58,10 @@ const statuses = ref([
 const columns = ref([
     { field: 'ma', header: 'Mã' },
     { field: 'ten', header: 'Tên' },
-   // { field: 'thoiGianBatDau', header: 'Ngày Bắt Đầu' },
+    // { field: 'thoiGianBatDau', header: 'Ngày Bắt Đầu' },
     //{ field: 'thoiGianKetThuc', header: 'Ngày Kết Thúc' },
     { field: 'moTa', header: 'Mô Tả' },
-    { field: 'giaTriGiam', header: 'Giá Trị (%)' },
+    { field: 'giaTriGiam', header: 'Giá Trị (%)' }
     // { field: 'giamToiDa', header: 'Giảm tối đa' },
     // { field: 'ngaySua', header: 'Ngày Sửa' },
     // { field: 'ngayTao', header: 'Ngày Tạo' }
@@ -84,6 +83,12 @@ const deleteKhuyenMai = () => {
     khuyenmaiService.deleteKhuyenMai(khuyenmai.value, khuyenmai.value.id);
     toast.add({ severity: 'warn', summary: '', detail: 'Khuyến mại đã được xoá', life: 3000 });
     deleteKhuyenMaiDialog.value = false;
+
+    // Xóa khuyến mãi khỏi danh sách
+    const index = khuyenmais.value.findIndex((item) => item.id === khuyenmai.value.id);
+    if (index !== -1) {
+        khuyenmais.value.splice(index, 1);
+    }
 };
 
 // dùng để lọc khuyến mại theo trạng thái trên CBB
@@ -124,6 +129,9 @@ const formatDate = (dateTime) => {
         return format(new Date(dateTime), 'yyyy/MM/dd');
     }
 };
+const formatCurrency = (value) => {
+    return parseInt(value).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+};
 
 const position = ref('center');
 const visible = ref(false);
@@ -144,7 +152,7 @@ const handRemovefile = () => {
     setNameFile.value = '';
 };
 
-const column = ['STT', 'Tên', 'Thời gian bắt đầu', 'Thời gian kết thúc', 'Giảm tối đa', 'Giá trị giảm', 'Mô tả'];
+const column = ['STT', 'Tên', 'Thời gian bắt đầu', 'Thời gian kết thúc', 'Số lượng', 'Giá trị giảm', 'Mô tả'];
 
 const generateExcel = () => {
     const workbook = new ExcelJS.Workbook();
@@ -156,6 +164,18 @@ const generateExcel = () => {
         key: col,
         width: columnWidths[index]
     }));
+
+    khuyenmais.value.forEach((khuyenmai, index) => {
+        worksheet.addRow({
+            STT: index + 1,
+            Tên: khuyenmai.ten,
+            'Thời gian bắt đầu': formatDate(khuyenmai.thoiGianBatDau),
+            'Thời gian kết thúc': formatDate(khuyenmai.thoiGianKetThuc),
+            'Số lượng': khuyenmai.soLuong,
+            'Giá trị giảm(%)': khuyenmai.giaTriGiam,
+            'Mô tả': khuyenmai.moTa
+        });
+    });
 
     const headerRow = worksheet.getRow(1);
     headerRow.eachCell((cell) => {
@@ -180,84 +200,84 @@ const generateExcel = () => {
     });
 };
 
-const excel = ref({});
-const handImportExcel = async (event) => {
-    showProgressSpinner.value = true;
-    dis.value = false;
-    const selectedFile = event.target.files[0];
-    setNameFile.value = event.target.files[0].name;
-    //  console.log(selectedFile)
-    const formData = new FormData();
-    formData.append('file', selectedFile);
+// const excel = ref({});
+// const handImportExcel = async (event) => {
+//     showProgressSpinner.value = true;
+//     dis.value = false;
+//     const selectedFile = event.target.files[0];
+//     setNameFile.value = event.target.files[0].name;
+//     //  console.log(selectedFile)
+//     const formData = new FormData();
+//     formData.append('file', selectedFile);
 
-    try {
-        await khuyenmaiService.uploadFile(formData);
-        excel.value = khuyenmaiService.excels;
-     //   console.log(excel.value)
-        let hasError = false;
-     //   for (const o of excel.value) {
-            for (const data of excel.value.responseList) {
-                if (data.importMessageTen !== null && data.importMessageTen !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageTen, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageThoiGianBatDau !== null && data.importMessageThoiGianBatDau !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageThoiGianBatDau, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageThoiGianKetThuc !== null && data.importMessageThoiGianKetThuc !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageThoiGianKetThuc, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageMoTa !== null && data.importMessageMoTa !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageMoTa, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageGiamToiDa !== null && data.importMessageGiamToiDa !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageGiamToiDa, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageGiaTriGiam !== null && data.importMessageGiaTriGiam !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageGiaTriGiam, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                } else if (data.importMessageKieuGiamGia !== null && data.importMessageKieuGiamGia !== 'SUCCESS') {
-                    toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageKieuGiamGia, life: 30000 });
-                    hasError = true;
-                    showProgressSpinner.value = false;
-                    dis.value = true;
-                    break;
-                }
-                if (hasError) {
-                break;
-            }
-            }
-          
-      //  }
-        if (!hasError) {
-            showProgressSpinner.value = false;
-            dis.value = true;
-            toast.add({ severity: 'success', summary: 'Success Message', detail: 'Import thành công', life: 3000 });
-            loadDataKhuyenmai();
-        }
-    } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'lỗi ', life: 10000 });
-        showProgressSpinner.value = false;
-        dis.value = true;
-    }
-};
+//     try {
+//         await khuyenmaiService.uploadFile(formData);
+//         excel.value = khuyenmaiService.excels;
+//         //   console.log(excel.value)
+//         let hasError = false;
+//         //   for (const o of excel.value) {
+//         for (const data of excel.value.responseList) {
+//             if (data.importMessageTen !== null && data.importMessageTen !== 'SUCCESS') {
+//                 toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageTen, life: 30000 });
+//                 hasError = true;
+//                 showProgressSpinner.value = false;
+//                 dis.value = true;
+//                 break;
+//             } else if (data.importMessageThoiGianBatDau !== null && data.importMessageThoiGianBatDau !== 'SUCCESS') {
+//                 toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageThoiGianBatDau, life: 30000 });
+//                 hasError = true;
+//                 showProgressSpinner.value = false;
+//                 dis.value = true;
+//                 break;
+//             } else if (data.importMessageThoiGianKetThuc !== null && data.importMessageThoiGianKetThuc !== 'SUCCESS') {
+//                 toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageThoiGianKetThuc, life: 30000 });
+//                 hasError = true;
+//                 showProgressSpinner.value = false;
+//                 dis.value = true;
+//                 break;
+//             } else if (data.importMessageMoTa !== null && data.importMessageMoTa !== 'SUCCESS') {
+//                 toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageMoTa, life: 30000 });
+//                 hasError = true;
+//                 showProgressSpinner.value = false;
+//                 dis.value = true;
+//                 break;
+//             } else if (data.importMessageGiamToiDa !== null && data.importMessageGiamToiDa !== 'SUCCESS') {
+//                 toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageGiamToiDa, life: 30000 });
+//                 hasError = true;
+//                 showProgressSpinner.value = false;
+//                 dis.value = true;
+//                 break;
+//             } else if (data.importMessageGiaTriGiam !== null && data.importMessageGiaTriGiam !== 'SUCCESS') {
+//                 toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageGiaTriGiam, life: 30000 });
+//                 hasError = true;
+//                 showProgressSpinner.value = false;
+//                 dis.value = true;
+//                 break;
+//             } else if (data.importMessageKieuGiamGia !== null && data.importMessageKieuGiamGia !== 'SUCCESS') {
+//                 toast.add({ severity: 'error', summary: 'Error', detail: data.importMessageKieuGiamGia, life: 30000 });
+//                 hasError = true;
+//                 showProgressSpinner.value = false;
+//                 dis.value = true;
+//                 break;
+//             }
+//             if (hasError) {
+//                 break;
+//             }
+//         }
+
+//         //  }
+//         if (!hasError) {
+//             showProgressSpinner.value = false;
+//             dis.value = true;
+//             toast.add({ severity: 'success', summary: 'Success Message', detail: 'Import thành công', life: 3000 });
+//             loadDataKhuyenmai();
+//         }
+//     } catch (error) {
+//         toast.add({ severity: 'error', summary: 'Error', detail: 'lỗi ', life: 10000 });
+//         showProgressSpinner.value = false;
+//         dis.value = true;
+//     }
+// };
 </script>
 <template>
     <div class="grid">
@@ -268,12 +288,12 @@ const handImportExcel = async (event) => {
                     <template v-slot:start>
                         <div class="my-2">
                             <AddKhuyenMai />
-                            <DeleteKhuyenMai :selectedKhuyenMai="selectedKhuyenMai" />
+                            <!-- <DeleteKhuyenMai :selectedKhuyenMai="selectedKhuyenMai" /> -->
                         </div>
                     </template>
 
                     <template v-slot:end>
-                        <Button label="Import excel" icon="pi pi-download" @click="openPosition('top')" style="min-width: 10rem" severity="secondary" rounded />
+                        <Button label="Export excel" icon="pi pi-download" @click="openPosition('top')" style="min-width: 10rem" severity="secondary" rounded />
                     </template>
                 </Toolbar>
 
@@ -305,8 +325,8 @@ const handImportExcel = async (event) => {
                             </span>
                         </div>
                     </template>
-
-                    <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+                    <Column headerStyle="width: 3rem"></Column>
+                    <!-- <Column selectionMode="multiple" headerStyle="width: 3rem"></Column> -->
 
                     <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header" :key="col.field + '_' + index" :sortable="true" headerStyle="width:14%; min-width:10rem;"></Column>
 
@@ -314,14 +334,12 @@ const handImportExcel = async (event) => {
                         <template #body="{ data }">
                             {{ formatDate(data.thoiGianBatDau) }}
                         </template>
-                       
                     </Column>
 
                     <Column header="Ngày Kết Thúc" filterField="date" dataType="date" style="min-width: 9rem">
                         <template #body="{ data }">
                             {{ formatDate(data.thoiGianKetThuc) }}
                         </template>
-                       
                     </Column>
 
                     <Column field="trangThai" header="Trạng Thái" sortable style="min-width: 12rem">
@@ -353,7 +371,15 @@ const handImportExcel = async (event) => {
             </div>
         </div>
     </div>
-    <Dialog v-model:visible="visible" header="Import excel" :style="{ width: '400px' }" :position="position" :modal="true" :draggable="false">
+
+    <Dialog v-model:visible="visible" header="Bạn có muốn xuất file excel không ?" :style="{ width: '400px' }" :position="position" :modal="true" :draggable="false">
+        <template #footer>
+            <Button label="Export" icon="pi pi-upload" class="p-button" @click="generateExcel($event)" rounded style="height: 40px; margin-right: 150px" severity="secondary" />
+            <Button label="Đóng" icon="pi pi-check" class="p-button" @click="closePosition()" severity="secondary" rounded style="height: 40px" />
+        </template>
+    </Dialog>
+
+    <!-- <Dialog v-model:visible="visible" header="Import excel" :style="{ width: '400px' }" :position="position" :modal="true" :draggable="false">
         <div class="flex align-items-center justify-content-center">
             <div v-if="dis">
                 <div class="custom-file-upload">
@@ -369,7 +395,7 @@ const handImportExcel = async (event) => {
             <Button label="Export" icon="pi pi-upload" class="p-button" @click="generateExcel($event)" rounded style="height: 40px; margin-right: 150px" severity="secondary" />
             <Button label="Đóng" icon="pi pi-check" class="p-button" @click="closePosition()" severity="secondary" rounded style="height: 40px" />
         </template>
-    </Dialog>
+    </Dialog> -->
 </template>
 <style scoped lang="scss">
 @import '@/assets/demo/styles/badges.scss';

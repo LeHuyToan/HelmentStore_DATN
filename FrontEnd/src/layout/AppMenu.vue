@@ -4,18 +4,17 @@ import { ref } from 'vue';
 import AppMenuItem from './AppMenuItem.vue';
 
 const model = ref([
-{
+    {
         label: 'Bán Hàng tại quầy',
-        items: [{ label: 'Bán Hàng', icon: 'pi pi-fw pi-home', to: { name: 'ban-hang' } }]
+        items: [{ label: 'Bán Hàng', icon: 'pi pi-fw pi-shopping-cart', to: { name: 'ban-hang' } }]
     },
     {
         label: 'Thống Kê',
-        items: [{ label: 'Thống Kê', icon: 'pi pi-fw pi-home', to: { name: 'thong-ke' } }]
+        items: [{ label: 'Thống Kê', icon: 'pi pi-fw pi-chart-bar', to: { name: 'thong-ke' } }]
     },
     {
         label: 'Sản Phẩm',
         items: [
-
             {
                 label: 'Quản Lý Sản Phẩm',
                 icon: '',
@@ -24,7 +23,8 @@ const model = ref([
                         label: 'Sản Phẩm',
                         icon: 'pi pi-fw pi-circle-off',
                         to: { name: 'quan-ly-san-pham' }
-                    }, {
+                    },
+                    {
                         label: 'Thương Hiệu',
                         icon: 'pi pi-fw pi-circle-off',
                         to: { name: 'thuong-hieu' }
@@ -53,51 +53,57 @@ const model = ref([
                         label: 'Trọng lượng',
                         icon: 'pi pi-fw pi-circle-off',
                         to: { name: 'trong-luong' }
-                    },
+                    }
                 ]
-            },
+            }
         ]
     },
     {
-        label: 'Vocher - Khuyễn Mại',
-        items: [{
-            label: 'Quản lý Khuyến Mại',
-            icon: 'pi pi-fw pi-circle-off',
-            to: { name: 'khuyen-mai' }
-        },
-        {
-            label: 'Quản lý Voucher',
-            icon: 'pi pi-fw pi-circle-off',
-            to: { name: 'voucher' }
-        },]
+        label: 'Voucher - Khuyến mãi',
+        items: [
+            {
+                label: 'Quản lý Khuyến mãi',
+                icon: 'pi pi-fw pi-tag',
+                to: { name: 'khuyen-mai' }
+            },
+            {
+                label: 'Quản lý Voucher',
+                icon: 'pi pi-fw pi-ticket',
+                to: { name: 'voucher' }
+            }
+        ]
     },
     {
         label: 'User',
-        items: [{
-            label: 'Quản lý User',
-            icon: 'pi pi-fw pi-circle-off',
-            to: { name: 'user' }
-        },]
+        items: [
+            {
+                label: 'Quản lý User',
+                icon: 'pi pi-fw pi-user',
+                to: { name: 'user' }
+            }
+        ]
     },
     {
         label: 'Quản lý Hóa Đơn',
-        items: [{
-            label: 'Hóa Đơn',
-            icon: 'pi pi-fw pi-circle-off',
-            to: { name: 'hoa-don' }
-        },]
-    },
+        items: [
+            {
+                label: 'Hóa Đơn',
+                icon: 'pi pi-fw pi-file',
+                to: { name: 'hoa-don' }
+            }
+        ]
+    }
 
-    {
-        label: 'Chat',
-        items: [{
-            label: 'Chat',
-            icon: 'pi pi-fw pi-circle-off',
-            to: { name: 'chat-admin' }
-        },]
-    },
-
-
+    // {
+    //     label: 'Chat',
+    //     items: [
+    //         {
+    //             label: 'Chat',
+    //             icon: 'pi pi-fw pi-comment',
+    //             to: { name: 'chat-admin' }
+    //         }
+    //     ]
+    // }
 ]);
 </script>
 

@@ -1,13 +1,13 @@
 <script setup>
-import {computed, watch, ref, onBeforeMount, onBeforeUnmount} from 'vue';
+import { computed, watch, ref, onBeforeMount, onBeforeUnmount } from 'vue';
 import AppTopbar from './AppTopbar.vue';
 import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppConfig from './AppConfig.vue';
 import { useLayout } from '@/layout/composables/layout';
-import * as chatService from "@/service/chatkitty";
-import {verifyJwt} from "@/service/common/JwtUtils";
-import {useChatStore} from "@/service/Admin/Chat/ChatService";
+import * as chatService from '@/service/chatkitty';
+import { verifyJwt } from '@/service/common/JwtUtils';
+import { useChatStore } from '@/service/Admin/Chat/ChatService';
 
 const chatStore = useChatStore();
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
@@ -60,16 +60,16 @@ const isOutsideClicked = (event) => {
 };
 
 onBeforeMount(async () => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     const payloadData = await verifyJwt(token);
-//     await chatService.login(payloadData.sub, payloadData.id);
-//     if (payloadData.role === 'USER') await chatStore.createDirectChannel(payloadData.sub);
-//   }
+    //   const token = localStorage.getItem('token');
+    //   if (token) {
+    //     const payloadData = await verifyJwt(token);
+    //     await chatService.login(payloadData.sub, payloadData.id);
+    //     if (payloadData.role === 'USER') await chatStore.createDirectChannel(payloadData.sub);
+    //   }
 });
 
 onBeforeUnmount(async () => {
-  await chatStore.tearDown();
+    await chatStore.tearDown();
 });
 </script>
 

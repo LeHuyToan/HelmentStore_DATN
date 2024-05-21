@@ -6,6 +6,10 @@ import com.example.demo.core.Admin.repository.AdVoucherReponsitory;
 import com.example.demo.entity.Voucher;
 import com.example.demo.util.DataUltil;
 import com.example.demo.util.ExcelUtils;
+
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -20,6 +24,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -226,6 +231,39 @@ public class AdExcelVoucherServiceImpl {
         }
 
         return lstVoucher;
+    }
+    
+    public void exportVouchersToExcel(List<Voucher> vouchers, HttpServletResponse response) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Vouchers");
+
+        // Tạo tiêu đề cho các cột
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Tên");
+        headerRow.createCell(1).setCellValue("Thời gian bắt đầu");
+        headerRow.createCell(2).setCellValue("Thời gian kết thúc");
+        headerRow.createCell(3).setCellValue("Số lượng");
+        headerRow.createCell(4).setCellValue("Mô tả");
+
+        // Đổ dữ liệu từ danh sách voucher vào tệp Excel
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        int rowNum = 1;
+        for (Voucher voucher : vouchers) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(voucher.getTen());
+            row.createCell(1).setCellValue(voucher.getThoiGianBatDau().format(formatter));
+            row.createCell(2).setCellValue(voucher.getThoiGianKetThuc().format(formatter));
+            row.createCell(3).setCellValue(voucher.getSoLuong());
+            row.createCell(4).setCellValue(voucher.getMoTa());
+        }
+
+        // Xuất tệp Excel qua HttpServletResponse
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=vouchers.xlsx");
+        ServletOutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        workbook.close();
+        outputStream.close();
     }
 
 }

@@ -80,7 +80,7 @@ const isTenTooLong = (ten) => {
     return ten.length > 30;
 };
 const isMoTaTooLong = (moTa) => {
-    if(moTa == null) return false;
+    if (moTa == null) return false;
     return moTa.length > 100;
 };
 const updateProduct = () => {
@@ -114,14 +114,14 @@ const updateProduct = () => {
                 <div class="p-fluid formgrid grid">
                     <div class="Field col-12" style="margin-bottom: 30px">
                         <span class="p-float-label">
-                            <InputText id="ten" name="ten" type="text" v-model="ten" :class="{ 'p-invalid': tenError }" v-model.trim="product.ten" required="true" autofocus />
+                            <InputText id="ten" name="ten" type="text" v-model="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
                             <label for="username">Tên màu sắc</label>
                         </span>
                         <small class="p-error">{{ tenError }}</small>
                     </div>
                     <div class="field col-12" style="margin-bottom: 30px">
                         <label for="address">Mô tả</label>
-                        <Textarea id="MoTa" rows="4" v-model="MoTa" :class="{ 'p-invalid': MoTaSacError }" v-model.trim="product.ten" required="true" autofocus></Textarea>
+                        <Textarea id="MoTa" rows="4" v-model="MoTa" :class="{ 'p-invalid': MoTaSacError }" required="true" autofocus></Textarea>
                         <small class="p-error">{{ MoTaSacError }}</small>
                     </div>
                 </div>

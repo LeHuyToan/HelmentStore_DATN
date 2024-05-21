@@ -15,6 +15,20 @@ import { KHThongBaoStore } from '../../service/KhachHang/ThongBaoService';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
+let lastScrollTop = 0;
+
+window.addEventListener('scroll', function () {
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    if (currentScroll > lastScrollTop) {
+        // Cuộn xuống: ẩn thanh topbar
+        document.querySelector('.layout-topbar-kh').style.top = '-5rem'; // Đặt giá trị top âm để ẩn topbar
+    } else {
+        // Cuộn lên: hiển thị lại thanh topbar
+        document.querySelector('.layout-topbar-kh').style.top = '0';
+    }
+    lastScrollTop = currentScroll;
+});
+
 const useHD = HDKHStore();
 
 const thongBaoStore = KHThongBaoStore();
@@ -67,7 +81,6 @@ const openSocketConnection = () => {
 
                     // loadDataSpChiTiet();
                     // loadDataHD();
-
                 });
             }
         }
@@ -185,7 +198,6 @@ const dangXuat = async () => {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUserInformation');
 
-
     const arraySPDaXem = JSON.parse(localStorage.getItem('spDaXem'));
     const arraySauKhiDangXuat = [];
     if (Array.isArray(arraySPDaXem)) {
@@ -202,6 +214,10 @@ const dangXuat = async () => {
 
 const dangNhap = async () => {
     await router.push({ name: 'login' });
+};
+
+const dangKy = async () => {
+    await router.push({ name: 'dang-ky' });
 };
 
 const topbarMenuClasses = computed(() => {
@@ -307,20 +323,16 @@ const toggle2 = (event) => {
     op.value.toggle(event);
 };
 
-
 const loadDataHDCT = async (idHD) => {
     const respone = await useHD.findHdByIdHd(idHD);
     dataHDCT.value = respone;
 };
-
-
-
 </script>
 
 <template>
-    <div class="layout-topbar">
+    <div class="layout-topbar layout-topbar-kh">
         <router-link :to="{ name: 'trang-chu' }" class="layout-topbar-logo" style="height: 60px; width: 120px">
-            <img src="/src/assets/images/logo.png" alt="logo" style="height: 70px" />
+            <img style="100%" src="/src/assets/images/logo.png" alt="logo" />
         </router-link>
 
         <button class="p-link layout-topbar-menu-button layout-topbar-button" @click="onTopBarMenuButton()">
@@ -329,48 +341,51 @@ const loadDataHDCT = async (idHD) => {
 
         <Toast />
         <div class="layout-topbar-menu">
-            <router-link :to="{ name: 'trang-chu' }" class="layout-topbar-logo" style="width: 100px; margin-left: 10px">
-                <p style="font-size: 16px">Home</p>
+            <router-link :to="{ name: 'trang-chu' }" class="layout-topbar-logo" style="width: 45px; margin-left: 25px">
+                <p style="font-size: 16px; width: 45px">Home</p>
             </router-link>
-            <router-link :to="{ name: 'san-pham' }" class="layout-topbar-logo" style="width: 100%; margin-left: 10px">
-                <p style="font-size: 16px">Sản phẩm</p>
+            <router-link :to="{ name: 'san-pham' }" class="layout-topbar-logo" style="width: 75px; margin-left: 25px">
+                <p style="font-size: 16px; width: 75px">Sản phẩm</p>
             </router-link>
-            <router-link :to="{ name: 'gioi-thieu' }" class="layout-topbar-logo" style="width: 140%; margin-left: 10px">
-                <p style="font-size: 16px">Về chúng tôi</p>
+            <router-link :to="{ name: 'gioi-thieu' }" class="layout-topbar-logo" style="width: 95px; margin-left: 25px">
+                <p style="font-size: 16px; width: 95px">Về chúng tôi</p>
             </router-link>
-            <router-link :to="{ name: 'san-pham-da-xem' }" class="layout-topbar-logo" style="width: 150%; margin-right: 10px">
-                <p style="font-size: 16px">Sản phẩm đã xem</p>
+            <router-link :to="{ name: 'san-pham-da-xem' }" class="layout-topbar-logo" style="width: 130px; margin-left: 25px">
+                <p style="font-size: 16px; width: 130px">Sản phẩm đã xem</p>
             </router-link>
 
-            <router-link :to="{ name: 'gio-hang' }" class="layout-topbar-logo" style="width: 5%; margin-right: 3px">
-                <i class="pi pi-shopping-cart p-text-secondary p-overlay-badge" style="font-size: 1.5rem" v-badge="gioHangService.soLuong"></i>
+            <router-link :to="{ name: 'gio-hang' }" class="layout-topbar-logo" style="width: 5%; margin-left: 25px">
+                <i class="pi pi-shopping-cart p-text-secondary p-overlay-badge layout-topbar-icon" v-badge="gioHangService.soLuong"></i>
             </router-link>
-            <div class="flex justify-content-center" style="margin-right: 10px; margin-left: 20px">
-                <button class="p-link" @click="toggle" aria-haspopup="true" aria-controls="overlay_tmenu">
-                    <i class="pi pi-user" style="font-size: 1.5rem" />
+            <div class="flex justify-content-center" style="margin-left: 25px">
+                <button style="border: none; background-color: white" @click="toggle" aria-haspopup="true" aria-controls="overlay_tmenu">
+                    <i class="pi pi-user layout-topbar-icon" />
                 </button>
                 <OverlayPanel ref="op2" style="display: block; width: 150px">
                     <button v-if="tokenCheck != null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu" @click="thongTinCaNhan">
-                        <div class="flex align-items-center" style="height: 20px; margin-bottom: 10px; width: 120px">Hồ sơ cá nhân</div>
+                        <div class="flex align-items-center" style="height: 25px; width: 120px; padding: 15px 5px; line-height: 25px">Hồ sơ cá nhân</div>
                     </button>
                     <button v-if="tokenCheck != null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu" @click="diaChi">
-                        <div class="flex align-items-center" style="height: 20px; margin-bottom: 10px; width: 120px">Địa chỉ</div>
+                        <div class="flex align-items-center" style="height: 25px; width: 120px; padding: 15px 5px; line-height: 25px">Địa chỉ</div>
                     </button>
                     <button v-if="tokenCheck != null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu" @click="lichSuMuaHang">
-                        <div class="flex align-items-center" style="height: 20px; margin-bottom: 10px; width: 120px">Lịch sử mua hàng</div>
+                        <div class="flex align-items-center" style="height: 25px; width: 120px; padding: 15px 5px; line-height: 25px">Lịch sử mua hàng</div>
                     </button>
                     <button v-if="tokenCheck == null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu" @click="dangNhap">
-                        <div class="flex align-items-center" style="height: 20px; margin-bottom: 10px; width: 120px">Đăng Nhập</div>
+                        <div class="flex align-items-center" style="height: 25px; width: 120px; padding: 15px 5px; line-height: 25px">Đăng Nhập</div>
+                    </button>
+                    <button v-if="tokenCheck == null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu" @click="dangKy">
+                        <div class="flex align-items-center" style="height: 25px; width: 120px; padding: 15px 5px; line-height: 25px">Đăng Ký</div>
                     </button>
 
                     <button v-if="tokenCheck != null" class="p-link a" aria-haspopup="true" aria-controls="overlay_tmenu" @click="dangXuat">
-                        <div class="flex align-items-center" style="height: 20px; margin-bottom: 10px; width: 120px">Đăng Xuất</div>
+                        <div class="flex align-items-center" style="height: 25px; width: 120px; padding: 15px 5px; line-height: 25px">Đăng Xuất</div>
                     </button>
                 </OverlayPanel>
             </div>
-            <div class="flex justify-content-center gap-4">
-                <button class="p-link" @click="toggle2" aria-haspopup="true" aria-controls="overlay_tmenu">
-                    <i v-badge="dem" class="pi pi-bell p-overlay-badge" style="font-size: 1.5rem" />
+            <div class="flex justify-content-center gap-4" style="margin-left: 25px">
+                <button style="border: none; background-color: white" @click="toggle2" aria-haspopup="true" aria-controls="overlay_tmenu">
+                    <i v-badge="dem" class="pi pi-bell p-overlay-badge layout-topbar-icon" />
                 </button>
 
                 <OverlayPanel ref="op" style="height: 300px; overflow: auto">
@@ -405,7 +420,7 @@ const loadDataHDCT = async (idHD) => {
 </template>
 
 <style lang="scss" scoped>
-button.p-link:hover {
+.p-link:hover {
     background-color: rgb(248, 239, 239);
     /* Thay #f00 bằng màu bạn muốn */
 }

@@ -11,6 +11,7 @@ import com.example.demo.util.ImageToAzureUtil;
 import com.microsoft.azure.storage.StorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -55,6 +56,7 @@ public class ThongTinServiceImpl implements ThongTinService {
                 u.setImage(request.getImage());
             } else {
                 String linkAnh = getImageToAzureUtil.uploadImageToAzure(request.getImage());
+
                 u.setImage(linkAnh);
             }
             User updatedUser = repository.save(u);
@@ -62,4 +64,5 @@ public class ThongTinServiceImpl implements ThongTinService {
         }
         return null;
     }
+    
 }

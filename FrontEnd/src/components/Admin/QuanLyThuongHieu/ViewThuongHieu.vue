@@ -142,7 +142,7 @@ const initFilters = () => {
                         <template #body="slotProps">
                             <DetailThuongHieu :my-prop="slotProps.data"></DetailThuongHieu>
                             <UpdateThuongHieu :my-prop="slotProps.data"></UpdateThuongHieu>
-                            <!-- <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editProduct(slotProps.data)" /> -->
+
                             <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteProduct(slotProps.data.id)" />
                         </template>
                     </Column>

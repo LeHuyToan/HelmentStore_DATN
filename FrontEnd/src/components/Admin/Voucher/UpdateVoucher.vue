@@ -12,8 +12,14 @@ const props = defineProps({
 });
 const updatevoucherDialog = ref(false);
 const schema = Yup.object().shape({
-    ten: Yup.string().required('Tên sản phẩm không được để trống').min(4, 'Tên sản phẩm phải có ít nhất 4 ký tự') .test('no-spaces', 'Tên không được chứa khoảng trắng', value => value && !/\s/.test(value)),
-    moTa: Yup.string().required('Vui lòng điền mô tả voucher').min(10, 'Mô tả voucher phải có ít nhất 10 ký tự') .test('no-spaces', 'Tên không được chứa khoảng trắng', value => value && !/\s/.test(value)),
+    ten: Yup.string()
+        .required('Tên sản phẩm không được để trống')
+        .min(4, 'Tên sản phẩm phải có ít nhất 4 ký tự')
+        .test('no-spaces', 'Tên không được chứa khoảng trắng', (value) => value && !/^\s|\s$/.test(value)),
+    moTa: Yup.string()
+        .required('Vui lòng điền mô tả voucher')
+        .min(10, 'Mô tả voucher phải có ít nhất 10 ký tự')
+        .test('no-spaces', 'Mô tả không được chứa khoảng trắng', (value) => value && !/^\s|\s$/.test(value)),
     giaTriGiam: Yup.number().required('Bạn cần nhập giá trị giảm của voucher').typeError('Giá trị giảm phải là số nguyên').min(1, 'Giá trị giảm phải lớn hơn hoặc bằng 1').max(100, 'Giá trị phải nhỏ hơn hoặc 100').nullable(),
     soLuong: Yup.number().required('Bạn cần nhập số lượng voucher').typeError('Số lượng voucher phải là một số').min(1, 'Số lượng phải lớn hơn hoặc bằng 1').nullable(),
     thoiGianBatDau: Yup.date()
@@ -58,8 +64,6 @@ const hideDialogVoucher = () => {
 };
 
 const update = handleSubmit(async () => {
-
-   
     const form = {
         ten: ten.value,
         thoiGianBatDau: thoiGianBatDau.value,
@@ -69,8 +73,7 @@ const update = handleSubmit(async () => {
         soLuong: soLuong.value,
         giamToiDa: giamToiDa.value
     };
-    
-    
+
     VoucherService.updateVoucher(form, props.myProp.id);
     toast.add({ severity: 'success', summary: 'Successful', detail: 'Cập nhật thành công', life: 3000 });
     updatevoucherDialog.value = false;
@@ -102,7 +105,7 @@ const update = handleSubmit(async () => {
         </div>
         <div class="field">
             <label for="moTa">Mô Tả</label>
-            <InputText id="moTa" v-model.trim="moTa" :class="{ 'p-invalid': moTaError }" />
+            <InputText id="moTa" v-model="moTa" :class="{ 'p-invalid': moTaError }" />
             <small class="p-error">{{ moTaError }}</small>
         </div>
 

@@ -1,18 +1,24 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const { layoutConfig } = useLayout();
 
 const logoUrl = computed(() => {
     return `layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
 });
+
+const dangKy = async () => {
+    await router.push({ name: 'dang-ky' });
+};
 </script>
 
 <template>
     <!-- Remove the container if you want to extend the Footer to full width. -->
     <!-- Footer -->
-    <footer class="text-lg-start text-white" style="background-color: #3e4551">
+    <footer class="text-lg-start text-white" style="background-color: #3e4551; margin-top: 15px">
         <!-- Grid container -->
         <div class="p-4 pb-0">
             <!-- Section: Links -->
@@ -21,7 +27,7 @@ const logoUrl = computed(() => {
                 <div class="row">
                     <!--Grid column-->
                     <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <h6 class="text-uppercase fw-bold">Công ty TNHH siêu to khổng lồ 1 thành viên</h6>
+                        <h6 class="text-uppercase fw-bold text-white">Công ty TNHH 1 thành viên</h6>
                         <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <p>Các thương hiệu mũ bảo hiểm của công ty như Royal, ROC, ROYCE, KIO... đã in đậm trong tâm trí khách hàng và khẳng định được chỗ đứng vững chắc tại thị trường trong nước cũng như quốc tế.</p>
                     </div>
@@ -29,7 +35,7 @@ const logoUrl = computed(() => {
 
                     <!--Grid column-->
                     <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <h6 class="text-uppercase fw-bold">THÔNG TIN</h6>
+                        <h6 class="text-uppercase fw-bold text-white">THÔNG TIN</h6>
                         <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <p>
                             <a href="#!" class="text-white">Giới thiệu chuỗi nón trùm</a>
@@ -58,10 +64,10 @@ const logoUrl = computed(() => {
                     <!--Grid column-->
                     <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
                         <!-- Links -->
-                        <h6 class="text-uppercase fw-bold">Liên hệ</h6>
+                        <h6 class="text-uppercase fw-bold text-white">Liên hệ</h6>
                         <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
-                        <p><i class="pi pi-home mr-3"></i> 342 đường Hồ Tùng Mậu, Bắc Từ Liêm, Hà Nội</p>
-                        <p><i class="pi pi-envelope mr-3"></i> vunlph28399@fpt.edu.vn</p>
+                        <p><i class="pi pi-home mr-3"></i> 123 đường Hồ Tùng Mậu, Bắc Từ Liêm, Hà Nội</p>
+                        <p><i class="pi pi-envelope mr-3"></i> cuahanglht@gmail.com</p>
                         <p><i class="pi pi-phone mr-3"></i> + 01 234 567 88</p>
                         <p><i class="pi pi-print mr-3"></i> + 01 234 567 89</p>
                     </div>
@@ -71,7 +77,7 @@ const logoUrl = computed(() => {
 
                     <!--Grid column-->
                     <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <h6 class="text-uppercase fw-bold">Kênh truyền thông & sàn thương mại điển tử</h6>
+                        <h6 class="text-uppercase fw-bold text-white" style="line-height: 1.5">Kênh truyền thông & sàn thương mại điển tử</h6>
                         <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <p>
                             <a href="#!" class="text-white">Tiktok Nón Trùm</a>
@@ -103,7 +109,7 @@ const logoUrl = computed(() => {
             <section class="">
                 <p class="d-flex justify-content-center align-items-center">
                     <span class="me-3">Register for free</span>
-                    <button type="button" class="btn btn-outline-light btn-rounded">Sign up!</button>
+                    <button v-if="tokenCheck == null" type="button" class="btn btn-outline-light btn-rounded" aria-haspopup="true" aria-controls="overlay_tmenu" @click="dangKy">Sign up</button>
                 </p>
             </section>
             <!-- Section: CTA -->
@@ -136,14 +142,12 @@ const logoUrl = computed(() => {
 
         <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-            © 2023 VNK:
-            <a class="text-white" href="https://mdbootstrap.com/">Dự án tốt nghiệp</a>
+            © 2024 LHT:
+            <a class="text-white" href="https://mdbootstrap.com/">Đồ án tốt nghiệp - Lê Huy Toàn</a>
         </div>
         <!-- Copyright -->
     </footer>
     <!-- Footer -->
     <!-- End of .container -->
 </template>
-<style lang="scss" scoped>
-</style>
-
+<style lang="scss" scoped></style>

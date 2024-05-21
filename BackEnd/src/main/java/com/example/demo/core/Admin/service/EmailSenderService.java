@@ -21,7 +21,7 @@ public class EmailSenderService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
         try {
-            helper.setFrom("mubaohiemvnk@gmail.com");
+            helper.setFrom("shopmubaohiemlht@gmail.com");
             helper.setTo(toEmail);
             helper.setSubject(subject);
             helper.setText(body, true);
@@ -38,7 +38,7 @@ public class EmailSenderService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
         try {
-            helper.setFrom("mubaohiemvnk@gmail.com");
+            helper.setFrom("shopmubaohiemlht@gmail.com");
             helper.setTo(toEmail);
             helper.setSubject(subject);
             helper.setText(body, true);

@@ -18,7 +18,7 @@ const schema = yup.object().shape({
         .string()
         .required('Tên không được để trống!')
         .max(30, 'Tên giới hạn 30 ký tự')
-        .matches(/^[a-zA-Z0-9đĐáÁàÀảẢãÃạẠăĂắẮằẰẳẲẵẴặẶâÂấẤầẦẩẨẫẪậẬêÊếẾềỀểỂễỄệỆôÔốỐồỒổỔỗỖộỘỏỎóÓòÒõÕọỌẻẺéÉèÈẽẼẹẸỉỈíÍìÌĩĨịỊơƠớỚờỜởỞỡỠợỢùÙúÚụỤủỦũŨưỨỨửỬữỮựỰýÝỳỲỷỶỹỸỵỴ\s]*$/, 'Tên không được chứa kí tự đặc biệt!'),
+        .matches(/^[a-zA-Z0-9đĐáÁàÀảẢãÃạẠăĂắẮằẰẳẲẵẴặẶâÂấẤầẦẩẨẫẪậẬêÊếẾềỀểỂễỄệỆôÔốỐồỒổỔỗỖộỘỏỎóÓòÒõÕọỌẻẺéÉèÈẽẼẹẸỉỈíÍìÌĩĨịỊơƠớỚờỜởỞỡỠợỢùÙúÚụỤủỦũŨưỨỨửỬữỮựỰýÝỳỲỷỶỹỸỵỴ\s]*$/, 'Tên không được chứa kí tự đặc biệt!')
 });
 const { handleSubmit, resetForm } = useForm({
     validationSchema: schema
@@ -45,10 +45,10 @@ const isTenTooLong = (ten) => {
 const addProduct = () => {
     submitted.value = true;
     const form = {
-        ten: ten.value,
+        ten: ten.value
     };
     // Kiểm tra trường "ten" có trống (null hoặc chuỗi rỗng) hoặc có chứa ký tự đặc biệt không
-    if (form.ten == null || form.ten.length <=0 ) {
+    if (form.ten == null || form.ten.length <= 0) {
         ten.value = '';
         toast.add({ severity: 'error', summary: 'Thông báo', detail: 'Thêm thất bại', life: 3000 });
     } else if (containsSpecialCharacters(form.ten)) {
@@ -98,7 +98,7 @@ const saveProduct = () => {
                 <div class="p-fluid formgrid grid">
                     <div class="Field col-12" style="margin-bottom: 30px">
                         <span class="p-float-label">
-                            <InputText id="ten" name="ten" type="text" v-model.trim="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
+                            <InputText id="ten" name="ten" type="text" v-model="ten" :class="{ 'p-invalid': tenError }" required="true" autofocus />
                             <label for="username">Tên loại</label>
                         </span>
                         <small class="p-error">{{ tenError }}</small>

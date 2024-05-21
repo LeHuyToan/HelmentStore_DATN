@@ -234,8 +234,8 @@ const onToggle = (val) => {
                     >
                 </div>
                 <template #footer>
-                    <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteProductDialog = false" />
-                    <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteProduct" />
+                    <Button label="Hủy" icon="pi pi-times" class="p-button-text" @click="deleteProductDialog = false" />
+                    <Button label="Xác nhận" icon="pi pi-check" class="p-button-text" @click="deleteProduct" />
                 </template>
             </Dialog>
 
@@ -245,8 +245,8 @@ const onToggle = (val) => {
                     <span v-if="product">Bạn có muốn vô hiệu hóa tài khoản?</span>
                 </div>
                 <template #footer>
-                    <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteProductsDialog = false" />
-                    <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteSelectedProducts" />
+                    <Button label="Hủy" icon="pi pi-times" class="p-button-text" @click="deleteProductsDialog = false" />
+                    <Button label="Xác nhận" icon="pi pi-check" class="p-button-text" @click="deleteSelectedProducts" />
                 </template>
             </Dialog>
         </div>
