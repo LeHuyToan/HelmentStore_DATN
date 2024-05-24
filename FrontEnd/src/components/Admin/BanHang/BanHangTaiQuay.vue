@@ -489,6 +489,7 @@ const confirmHuyHD = (event, data) => {
             </div>
         </template>
     </ConfirmDialog>
+    <!-- form xuất hóa đơn -->
     <div id="sales-invoice" hidden>
         <table style="width: 100%; font-size: 0.8rem">
             <tr style="border: 1px solid white">
@@ -566,7 +567,7 @@ const confirmHuyHD = (event, data) => {
         </table>
         <div>
             <i style="margin-left: 23.5rem; margin-top: 1.3rem">{{ new Date().getHours() }} giờ {{ new Date().getMinutes() }} phút, ngày {{ new Date().getDate() }} tháng {{ new Date().getMonth() + 1 }} năm {{ new Date().getFullYear() }}</i>
-            <p style="margin-left: 29.5rem">Nhân viên bán hàng</p>
+            <p style="margin-left: 29.5rem">Người bán hàng</p>
             <strong style="margin-left: 30.5rem; margin-top: 3rem">{{ selectedHoaDon ? selectedHoaDon.nguoiTao.ten : null }}</strong>
         </div>
         <i style="text-align: center; margin-top: 2rem">Cảm ơn quý khách đã mua hàng tại LHT, hẹn gặp lại quý khách!</i>
@@ -593,7 +594,7 @@ const confirmHuyHD = (event, data) => {
                                 {{ formatDateAndTime(slotProps.data.ngayTao) }}
                             </template>
                         </Column>
-                        <Column field="nguoiTao.ten" header="Nhân viên"></Column>
+                        <Column field="nguoiTao.ten" header="Người bán hàng"></Column>
                         <Column header="Khách hàng">
                             <template #body="slotProps">
                                 <div class="flex justify-content-between align-items-center">

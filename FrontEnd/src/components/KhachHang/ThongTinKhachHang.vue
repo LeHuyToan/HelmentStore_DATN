@@ -132,16 +132,26 @@ const updateProduct = () => {
 //     });
 // }
 
+// function onFileInputImage(event) {
+//     const files = event.target.files;
+//     // Lặp qua từng tệp trong mảng files
+//     for (const file of files) {
+//         const objectURL = URL.createObjectURL(file);
+//         image.value = objectURL;
+//         // Gán giá trị cho phần tử có id là 'imagesChinh' (thay đổi id nếu cần)
+//         const basePath = 'D:\\imgDATN\\'; // Đường dẫn cố định
+//         const fileName = basePath + file.name;
+//         image.value = fileName;
+//     }
+// }
 function onFileInputImage(event) {
     const files = event.target.files;
-    // Lặp qua từng tệp trong mảng files
     for (const file of files) {
-        const objectURL = URL.createObjectURL(file);
-        image.value = objectURL;
-        // Gán giá trị cho phần tử có id là 'imagesChinh' (thay đổi id nếu cần)
-        const basePath = 'D:\\imgDATN\\'; // Đường dẫn cố định
-        const fileName = basePath + file.name;
-        image.value = fileName;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            image.value = e.target.result;
+        };
+        reader.readAsDataURL(file);
     }
 }
 

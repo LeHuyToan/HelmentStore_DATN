@@ -77,9 +77,9 @@ const deleteProduct = (id) => {
                         <TabPanel header="Admin">
                             <Admin> </Admin>
                         </TabPanel>
-                        <TabPanel header="Nhân viên">
+                        <!-- <TabPanel header="Nhân viên">
                             <NhanVien> </NhanVien>
-                        </TabPanel>
+                        </TabPanel> -->
                         <TabPanel header="Khách hàng">
                             <KhachHang> </KhachHang>
                         </TabPanel>
